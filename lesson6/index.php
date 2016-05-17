@@ -30,7 +30,3 @@ if (!$_GET) {
     echo '<h3>Такой страницы не существует.</h3>
             <a href="index.php">Назад</a>';
 }
-
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';

@@ -63,7 +63,7 @@ function show_categories($category_id = '') {
 }
 
 function show_ads_list() {
-    foreach($_SESSION as $id => $ad) {
+    foreach($_SESSION['ads'] as $id => $ad) {
         echo "<tr>
                   <td><a href='?id=$id'>{$ad['title']}</a></td>
                   <td>{$ad['price']}</td>
@@ -75,10 +75,28 @@ function show_ads_list() {
 
 function show_form($id = '') {
     if ($id) {
-        $ad = array();
-        $ad = $_SESSION[$id];
+        $ad = $_SESSION['ads'][$id];
+        if (isset($_POST['fill'])) {
+            $ad = fill_data();
+        }
         require 'form.php';
     } else {
-        require 'form.php';       
+        if (isset($_POST['fill'])) {
+            $ad = fill_data();
+        }
+        require 'form.php';
     }
+}
+
+function fill_data() {
+    return $ad = array(
+        'private' => 'option1',
+        'seller_name' => 'Иван',
+        'email' => 'ivan@mail.ru',
+        'phone' => '+79059051234',
+        'location_id' => '641600',
+        'category_id' => '9',
+        'title' => 'BMW M' . substr(time(), -4, 4) . ' Sedan',
+        'description' => 'ХТС. Звоните после 18:00.'
+    );
 }

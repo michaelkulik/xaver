@@ -109,17 +109,22 @@
                     </div>
                     <label class="col-sm-2 form-control-label">руб.</label>
                 </div>
-                <?php if (!isset($ad)): ?>
-                    <div class="form-group row">
-                        <div class="col-sm-3 col-sm-offset-9">
-                            <button type="submit" class="btn btn-primary">Опубликовать</button>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <div class="form-group row">
+                <div class="form-group row">
+                <?php if (isset($_GET['id'])): ?>
+                    <div class="col-sm-7">
                         <a href="index.php" class="btn btn-secondary">Назад</a>
                     </div>
-                <?php endif; ?>
+                    <div class="col-sm-5">
+                        <button name="fill" class="btn btn-secondary">Заполнить</button>
+                        <button name="submit" class="btn btn-success">Сохранить</button>
+                    </div>
+                <?php else: ?>
+                    <div class="col-sm-5 col-sm-offset-7">
+                        <button name="fill" class="btn btn-secondary">Заполнить</button>
+                        <button name="submit" class="btn btn-success">Сохранить</button>
+                    </div>
+                <?php  endif; ?>
+                </div>
             </form>
         </div>
     </div>

@@ -19,13 +19,13 @@
                     <div class="col-sm-8">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="private" value="option1" <?php echo $checked = (isset($ad['private']) && $ad['private'] == 'option1') ? 'checked=""' : ''; ?>>
+                                <input type="radio" name="private" value="option1" <?php echo (isset($ad['private']) && $ad['private'] == 'option1') ? 'checked=""' : ''; ?>>
                                 Частное лицо
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="private" value="option2" <?php echo $checked = (isset($ad['private']) && $ad['private'] == 'option2') ? 'checked=""' : ''; ?>>
+                                <input type="radio" name="private" value="option2" <?php echo (isset($ad['private']) && $ad['private'] == 'option2') ? 'checked=""' : ''; ?>>
                                 Компания
                             </label>
                         </div>
@@ -34,13 +34,13 @@
                 <div class="form-group row">
                     <label for="name" class="col-sm-4 form-control-label">Ваше имя</label>
                     <div class="col-sm-8">
-                        <input type="text" name="seller_name" class="form-control" id="name" placeholder="Имя" value="<?php echo $value = (isset($ad['seller_name'])) ? $ad['seller_name'] : ''; ?>">
+                        <input type="text" name="seller_name" class="form-control" id="name" placeholder="Имя" value="<?php echo (isset($ad['seller_name'])) ? $ad['seller_name'] : ''; ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="email" class="col-sm-4 form-control-label">Email</label>
                     <div class="col-sm-8">
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="<?php echo $value = (isset($ad['email'])) ? $ad['email'] : ''; ?>">
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="<?php echo (isset($ad['email'])) ? $ad['email'] : ''; ?>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -48,7 +48,7 @@
                     <div class="col-sm-8">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="allow_mails" <?php echo $checked = (isset($ad['allow_mails'])) ? 'checked=""' : ''; ?>> Я не хочу получать вопросы по объявлению по e-mail
+                                <input type="checkbox" name="allow_mails" <?php echo (isset($ad['allow_mails'])) ? 'checked=""' : ''; ?>> Я не хочу получать вопросы по объявлению по e-mail
                             </label>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="form-group row">
                     <label for="phone" class="col-sm-4 form-control-label">Телефон</label>
                     <div class="col-sm-8">
-                        <input type="tel" name="phone" class="form-control" id="phone" placeholder="Телефон" value="<?php echo $value = (isset($ad['phone'])) ? $ad['phone'] : ''; ?>">
+                        <input type="tel" name="phone" class="form-control" id="phone" placeholder="Телефон" value="<?php echo (isset($ad['phone'])) ? $ad['phone'] : ''; ?>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -65,13 +65,7 @@
                         <select name="location_id" class="form-control" id="cities">
                             <option>-- Выберите город --</option>
                             <option disabled="disabled">-- Города --</option>
-                            <?php
-                            if (isset($ad['location_id'])) {
-                                show_cities($ad['location_id']);
-                            } else {
-                                show_cities();
-                            }
-                            ?>
+                            <?php (isset($ad['location_id'])) ? show_cities($ad['location_id']) : show_cities(); ?>
                         </select>
                     </div>
                 </div>
@@ -93,19 +87,19 @@
                 <div class="form-group row">
                     <label for="title" class="col-sm-4 form-control-label">Название объявления</label>
                     <div class="col-sm-8">
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="<?php echo $value = (isset($ad['title'])) ? $ad['title'] : ''; ?>">
+                        <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="<?php echo (isset($ad['title'])) ? $ad['title'] : ''; ?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="description" class="col-sm-4 form-control-label">Описание объявления</label>
                     <div class="col-sm-8">
-                        <textarea name="description" class="form-control" id="description" rows="3"><?php echo $value = (isset($ad['description'])) ? $ad['description'] : ''; ?></textarea>
+                        <textarea name="description" class="form-control" id="description" rows="3"><?php echo (isset($ad['description'])) ? $ad['description'] : ''; ?></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="price" class="col-sm-4 form-control-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="text" name="price" class="form-control" id="price" placeholder="0" value="<?php echo $value = (isset($ad['price'])) ? $ad['price'] : ''; ?>">
+                        <input type="text" name="price" class="form-control" id="price" placeholder="0" value="<?php echo (isset($ad['price'])) ? $ad['price'] : ''; ?>">
                     </div>
                     <label class="col-sm-2 form-control-label">руб.</label>
                 </div>

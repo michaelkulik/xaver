@@ -74,18 +74,9 @@ function show_ads_list() {
 }
 
 function show_form($id = '') {
-    if ($id) {
-        $ad = $_SESSION['ads'][$id];
-        if (isset($_POST['fill'])) {
-            $ad = fill_data();
-        }
-        require 'form.php';
-    } else {
-        if (isset($_POST['fill'])) {
-            $ad = fill_data();
-        }
-        require 'form.php';
-    }
+    if ($id) $ad = $_SESSION['ads'][$id];
+    if (isset($_POST['fill'])) $ad = fill_data();
+    require 'form.php';
 }
 
 function fill_data() {

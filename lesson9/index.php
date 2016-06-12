@@ -1,5 +1,7 @@
 <?php
 
+header('Content-Type: text/html; charset=utf-8');
+
 // подключение файла конфигурации
 require 'config.inc.php';
 
@@ -7,48 +9,49 @@ require 'config.inc.php';
 require 'model.php';
 
 // получение списка городов
-$smarty->assign('cities', get_cities());
+$smarty->assign('cities', get_cities($connection));
 
 // получение списка категорий
-$smarty->assign('cat', get_categories());
-
-// удаление объявления
-if (isset($_GET['delete'])) {
-    $id = (int) $_GET['delete'];
-    if (delete($id)) {
-        header('location: index.php');
-    } else {
-        echo '<p>Ошибка при удалении.</p>';
-    }
-}
+$smarty->assign('cat', get_categories($connection));
 
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
     if (isset($_GET['id'])) {
         $id = (int) $_GET['id'];
-        save($id);
+        save($id, $connection);
     } else {
-        save();
+        save('', $connection);
     }
 }
-
-if (!$_GET) {
+// удаление объявления
+elseif (isset($_GET['delete'])) {
+    $id = (int) $_GET['delete'];
+    if (delete($id, $connection)) {
+        header('location: index.php');
+    } else {
+        echo '<p>Ошибка при удалении.</p>';
+    }
+}
+// главная страница
+elseif (!$_GET) {
     // получение всех объявлений
-    $ads = get_ads();
+    $ads = get_ads('', $connection);
     $smarty->assign('ads', $ads);
 
     show_form('', $ads, $smarty);
-} elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
+}
+// страница выбранного объявления
+elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
     // получение выбранного объявления
-    $ads = get_ads((int) $_GET['id']);
+    $ads = get_ads((int) $_GET['id'], $connection);
     
     if ($ads) {
         show_form((int)$_GET['id'], $ads, $smarty);
     } else {
-        echo '<h3>Такой страницы не существует.</h3>
-            <a href="index.php">Назад</a>';
+        page_not_found();
     }
-} else {
-    echo '<h3>Такой страницы не существует.</h3>
-            <a href="index.php">Назад</a>';
+}
+// нанайденная страница
+else {
+    page_not_found();
 }

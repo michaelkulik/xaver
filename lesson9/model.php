@@ -1,38 +1,33 @@
 <?php
 
-/* ==== Фильтрация входящих данных ==== */
-function clear($var){
-    $var = mysql_real_escape_string(strip_tags($var));
-    return $var;
-}
-/* ==== Фильтрация входящих данных ==== */
-
-
-/* ==== Получение списка объявлений ==== */
-function get_ads($id = '') {
+/* ==== Получение объявлений ==== */
+function get_ads($id = '', $c) {
     if ($id) {
-        $sql = "SELECT * FROM `ads` WHERE `id` = $id";
-        $res = mysql_query($sql) or die(mysql_error());
-        $ads = mysql_fetch_assoc($res);
+        $sql = "SELECT * FROM `ads` WHERE `id` = ?";
+        $stmt = $c->prepare($sql);
+        $stmt->execute([$id]);
+        $ads = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
         $sql = 'SELECT `id`, `title`, `price`, `seller_name` FROM `ads`';
-        $res = mysql_query($sql) or die(mysql_error());
-        while ($row = mysql_fetch_assoc($res)) {
+        $res = $c->query($sql);
+
+        $ads = [];
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $ads[] = $row;
         }
     }
     
     return $ads;
 }
-/* ==== Получение списка объявлений ==== */
+/* ==== Получение объявлений ==== */
 
 
 /* ==== Получение списка городов ==== */
-function get_cities() {
+function get_cities($c) {
     $sql = 'SELECT * FROM `cities`';
-    $res = mysql_query($sql) or die(mysql_error());
+    $res = $c->query($sql);
     
-    while ($row = mysql_fetch_assoc($res)) {
+    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         $cities[$row['id']] = $row['name'];
     }
     
@@ -42,11 +37,12 @@ function get_cities() {
 
 
 /* ==== Получение списка категорий ==== */
-function get_categories() {
+function get_categories($c) {
     $sql = 'SELECT * FROM `categories`';
-    $res = mysql_query($sql) or die(mysql_error());
+    $res = $c->query($sql);
     
-    while ($row = mysql_fetch_assoc($res)) {
+    $cat = [];
+    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         if(!$row['parent_id']){ // если parent_id = 0
             $cat[$row['id']][] = $row['name']; // $cat[1][0] = $row['name']
         } else { // если parent_id != 0
@@ -60,31 +56,32 @@ function get_categories() {
 
 
 /* ==== Сохранение и редактирование объявления ==== */
-function save($id = '') {
+function save($id = '', $c) {
     $role = $_POST['role'];
-    $seller_name = clear(trim($_POST['seller_name']));
-    $email = clear(trim($_POST['email']));
+    $seller_name = trim($_POST['seller_name']);
+    $email = trim($_POST['email']);
     $allow_mails = (isset($_POST['allow_mails'])) ? 'yes' : 'no';
-    $phone = clear(trim($_POST['phone']));
+    $phone = trim($_POST['phone']);
     $city_id = $_POST['city_id'];
     $category_id = $_POST['category_id'];
-    $title = clear(trim($_POST['title']));
-    $description = clear(trim($_POST['description']));
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
     $price = abs(round($_POST['price']));;
 
     if ($id) { // редактирование объявления
-        $sql = "UPDATE `ads` SET `title` = '$title', `description` = '$description', `seller_name` = '$seller_name', 
-                                  `email` = '$email', `phone` = '$phone', `price` = $price, `role` = '$role', 
-                                  `allow_mails` = '$allow_mails', `city_id` = $city_id, `category_id` = $category_id 
-                                      WHERE `id` = $id";
+        $sql = "UPDATE `ads` SET `title` = ?, `description` = ?, `seller_name` = ?, `email` = ?, `phone` = ?, `price` = ?, 
+                  `role` = ?, `allow_mails` = ?, `city_id` = ?, `category_id` = ? WHERE `id` = $id";
     } else { // сохранение нового объявления
         $sql = "INSERT INTO `ads` (`title`, `description`, `seller_name`, `email`, `phone`, `price`, `role`, `allow_mails`, `city_id`, `category_id`)
-                  VALUES ('$title', '$description', '$seller_name', '$email', '$phone', $price, '$role', '$allow_mails', $city_id, $category_id)";
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
-    mysql_query($sql) or die(mysql_error());
+    $stmt = $c->prepare($sql);
     
-    if (mysql_affected_rows() > 0) {
-        header('Location: index.php');
+    $insert_data = [$title, $description, $seller_name, $email, $phone, $price, $role, $allow_mails, $city_id, $category_id];
+    if ($stmt->execute($insert_data)) {
+        header('location: index.php');
+    } else {
+        echo 'Произошла ошибка при сохранении/редактировании объявления.';
     }
 }
 /* ==== Сохранение и редактирование объявления ==== */
@@ -117,14 +114,21 @@ function fill_data() {
 
 
 /* ==== Удаление объявления ==== */
-function delete($id) {
+function delete($id, $c) {
     $sql = "DELETE FROM `ads` WHERE `id` = $id";
-    mysql_query($sql) or die(mysql_error());
     
-    if (mysql_affected_rows() > 0) {
+    if ($c->query($sql)) {
         return true;
     } else {
         return false;
     }
 }
 /* ==== Удаление объявления ==== */
+
+
+/* ==== Функция вывода ненайденной страницы ==== */
+function page_not_found() {
+    echo '<h3>Такой страницы не существует.</h3>
+            <a href="index.php">Назад</a>';
+}
+/* ==== Функция вывода ненайденной страницы ==== */

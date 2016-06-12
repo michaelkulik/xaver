@@ -20,6 +20,3 @@ $smarty->config_dir = SMARTY_DIRECTORY . 'configs';
 $smarty->assign('title', 'lesson9 | Xaver Course');
 
 // подключение к БД
-mysql_connect('localhost', 'root', '') or die('No connect to server');
-mysql_select_db('wall_of_ads') or die('No connect to db');
-mysql_query('SET NAMES "utf8"') or die('Can\'t set charset');

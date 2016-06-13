@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.25-dev, created on 2016-06-12 00:57:00
+<?php /* Smarty version 2.6.25-dev, created on 2016-06-13 06:17:35
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_options', 'index.tpl', 58, false),)), $this); ?>
@@ -122,7 +122,7 @@ unset($_smarty_tpl_vars);
                     <?php else: ?>
                     <div class="col-sm-5 col-sm-offset-7">
                         <button name="fill" class="btn btn-secondary">Заполнить</button>
-                        <button name="submit" class="btn btn-success">Сохранить</button>
+                        <button name="submit" class="btn btn-success">Добавить</button>
                     </div>
                     <?php endif; ?>
                 </div>

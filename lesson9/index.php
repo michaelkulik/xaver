@@ -16,12 +16,8 @@ $smarty->assign('cat', get_categories($connection));
 
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
-    if (isset($_GET['id'])) {
-        $id = (int) $_GET['id'];
-        save($id, $connection);
-    } else {
-        save('', $connection);
-    }
+    $id = (isset($_GET['id'])) ? (int) $_GET['id'] : '';
+    save($id, $connection);
 }
 // удаление объявления
 elseif (isset($_GET['delete'])) {

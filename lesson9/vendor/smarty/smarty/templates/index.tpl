@@ -103,7 +103,7 @@
                     {else}
                     <div class="col-sm-5 col-sm-offset-7">
                         <button name="fill" class="btn btn-secondary">Заполнить</button>
-                        <button name="submit" class="btn btn-success">Сохранить</button>
+                        <button name="submit" class="btn btn-success">Добавить</button>
                     </div>
                     {/if}
                 </div>

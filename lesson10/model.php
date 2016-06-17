@@ -3,79 +3,56 @@
 /* ==== Получение объявлений ==== */
 function get_ads($id = '', $c) {
     if ($id) {
-        $sql = "SELECT * FROM `ads` WHERE `id` = ?";
-        $stmt = $c->prepare($sql);
-        $stmt->execute([$id]);
-        $ads = $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM `ads` WHERE `id` = ?d";
+        return $c->selectRow($sql, $id);
     } else {
         $sql = 'SELECT `id`, `title`, `price`, `seller_name` FROM `ads`';
-        $res = $c->query($sql);
-        
-        $ads = $res->fetchAll(PDO::FETCH_ASSOC);
+        return $c->select($sql);
     }
-    
-    return $ads;
 }
 /* ==== Получение объявлений ==== */
 
 
 /* ==== Получение списка городов ==== */
 function get_cities($c) {
-    $sql = 'SELECT * FROM `cities`';
-    $res = $c->query($sql);
-    
-    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-        $cities[$row['id']] = $row['name'];
-    }
-    
-    return $cities;
+    $sql = 'SELECT id AS ARRAY_KEY, name FROM cities';
+    return $cities = $c->selectCol($sql);
 }
 /* ==== Получение списка городов ==== */
 
 
 /* ==== Получение списка категорий ==== */
 function get_categories($c) {
-    $sql = 'SELECT * FROM `categories`';
-    $res = $c->query($sql);
-    
-    $cat = [];
-    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-        if(!$row['parent_id']){ // если parent_id = 0
-            $cat[$row['id']][] = $row['name']; // $cat[1][0] = $row['name']
-        } else { // если parent_id != 0
-            $cat[$row['parent_id']]['sub'][$row['id']] = $row['name']; // $cat[1]['sub'][6] (введём sub для дочерних категорий)
-        }
-    }
-    
-    return $cat;
+    $sql = 'SELECT id AS ARRAY_KEY, name, parent_id AS PARENT_KEY FROM `categories`';
+    return $c->select($sql);
 }
 /* ==== Получение списка категорий ==== */
 
 
 /* ==== Сохранение и редактирование объявления ==== */
 function save($id = '', $c) {
-    $role = $_POST['role'];
-    $seller_name = trim($_POST['seller_name']);
-    $email = trim($_POST['email']);
-    $allow_mails = (isset($_POST['allow_mails'])) ? 'yes' : 'no';
-    $phone = trim($_POST['phone']);
-    $city_id = $_POST['city_id'];
-    $category_id = $_POST['category_id'];
-    $title = trim($_POST['title']);
-    $description = trim($_POST['description']);
-    $price = abs(round($_POST['price']));;
+    $data = [
+        'role' => $_POST['role'],
+        'seller_name' => trim($_POST['seller_name']),
+        'email' => trim($_POST['email']),
+        'allow_mails' => (isset($_POST['allow_mails'])) ? 'yes' : 'no',
+        'phone' => trim($_POST['phone']),
+        'city_id' => $_POST['city_id'],
+        'category_id' => $_POST['category_id'],
+        'title' => trim($_POST['title']),
+        'description' => trim($_POST['description']),
+        'price' => abs(round($_POST['price']))
+    ];
 
     if ($id) { // редактирование объявления
-        $sql = "UPDATE `ads` SET `title` = ?, `description` = ?, `seller_name` = ?, `email` = ?, `phone` = ?, `price` = ?, 
-                  `role` = ?, `allow_mails` = ?, `city_id` = ?, `category_id` = ? WHERE `id` = $id";
+        $sql = "UPDATE `ads` SET ?a WHERE `id` = ?d";
+        $res = $c->query($sql, $data, $id);
     } else { // сохранение нового объявления
-        $sql = "INSERT INTO `ads` (`title`, `description`, `seller_name`, `email`, `phone`, `price`, `role`, `allow_mails`, `city_id`, `category_id`)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `ads` (?#) VALUES (?a)";
+        $res = $c->query($sql, array_keys($data), array_values($data));
     }
-    $stmt = $c->prepare($sql);
     
-    $insert_data = [$title, $description, $seller_name, $email, $phone, $price, $role, $allow_mails, $city_id, $category_id];
-    if ($stmt->execute($insert_data)) {
+    if ($res !== false) {
         header('location: index.php');
     } else {
         echo 'Произошла ошибка при сохранении/редактировании объявления.';
@@ -112,9 +89,9 @@ function fill_data() {
 
 /* ==== Удаление объявления ==== */
 function delete($id, $c) {
-    $sql = "DELETE FROM `ads` WHERE `id` = $id";
+    $sql = "DELETE FROM `ads` WHERE `id` = ?d";
     
-    if ($c->query($sql)) {
+    if ($c->query($sql, $id)) {
         return true;
     } else {
         return false;

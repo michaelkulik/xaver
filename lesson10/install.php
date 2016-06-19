@@ -1,5 +1,7 @@
 <?php
 
+header('Content-type: text/html; charset=utf-8');
+
 require 'config.inc.php';
 
 if (isset($_POST['submit'])) {
@@ -8,10 +10,10 @@ if (isset($_POST['submit'])) {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $connection = DbSimple_Generic::connect('mysql://' . $username . ':' . $password . '@' . $server_name . '/' . $database_name);
+    $connection = @DbSimple_Generic::connect('mysql://' . $username . ':' . $password . '@' . $server_name . '/' . $database_name);
 
     // запись подключения к БД в config.inc.php
-    $put = "\r\n\$connection = DbSimple_Generic::connect('mysql://$username:$password@$server_name/$database_name');
+    $put = "\r\n\$connection = @DbSimple_Generic::connect('mysql://$username:$password@$server_name/$database_name');
             \r\n// Устанавливаем обработчик ошибок и функцию логирования
             \r\$connection->setErrorHandler('databaseErrorHandler');\r\$connection->setLogger('myLogger');";
     

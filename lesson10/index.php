@@ -1,6 +1,6 @@
 <?php
 
-//header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: text/html; charset=utf-8');
 
 // подключение файла конфигурации
 require 'config.inc.php';
@@ -13,12 +13,7 @@ $smarty->assign('cities', get_cities($connection));
 
 // получение списка категорий
 $smarty->assign('cat', get_categories($connection));
-//$smarty->display('index.tpl');
-//$a = get_categories($connection);
-//echo '<pre>';
-//print_r($a);
-//echo '</pre>';
-//exit;
+
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
     $id = (isset($_GET['id'])) ? $_GET['id'] : '';

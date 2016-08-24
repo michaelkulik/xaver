@@ -4,8 +4,8 @@ require_once 'Db.php';
 
 class Ads extends Db
 {
-    // name of table
     protected $table = 'ads';
+    protected $cols = ['title', 'description', 'sellerName', 'email', 'phone', 'price', 'role', 'allowMails', 'cityId', 'categoryId'];
 
     // columns in the table
     private $id;

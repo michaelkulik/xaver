@@ -63,7 +63,7 @@ function save($id = '', $c) {
     $category_id = $_POST['category_id'];
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
-    $price = abs(round($_POST['price']));;
+    $price = abs(round($_POST['price']));
 
     if ($id) { // редактирование объявления
         $sql = "UPDATE `ads` SET `title` = ?, `description` = ?, `seller_name` = ?, `email` = ?, `phone` = ?, `price` = ?, 

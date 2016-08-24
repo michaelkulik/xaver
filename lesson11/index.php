@@ -5,11 +5,11 @@ require_once 'Ads.php';
 
 //$ad = new Db();
 $ad = new Ads();
+$ad->setTitle('Аккордеон');
+$ad->setPrice(5);
 
-$ad->setId(2);
-$ad->fetchById($c);
+$ad->save($c);
 
-echo $ad->getTitle();
 //$records = $ads->fetchAds($c);
 //
 //foreach ($records as $record) {

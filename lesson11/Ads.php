@@ -1,6 +1,8 @@
 <?php
 
-class Ads
+require_once 'Db.php';
+
+class Ads extends Db
 {
     // name of table
     protected $table = 'ads';

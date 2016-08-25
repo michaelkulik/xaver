@@ -64,7 +64,7 @@
                     <div class="col-sm-8">
                         <select name="category_id" class="form-control" id="categories">
                             <option>-- Выберите категорию --</option>
-                            {foreach from = $cat item = parent_cat}
+                            {foreach from = $cats item = parent_cat}
                                 <optgroup label="{$parent_cat.0}">
                                     {html_options options = $parent_cat.sub selected = $ad.category_id}
                                 </optgroup>

@@ -8,9 +8,9 @@ class Db
         $sql = 'SELECT * FROM ' . $this->table;
         $res = $c->query($sql);
         $records = [];
-        while ($ad = $res->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $temp = new $this();
-            $temp->setProperties($ad);
+            $temp->setProperties($row);
             $records[] = $temp;
         }
         return $records;
@@ -21,31 +21,21 @@ class Db
         $sql = "SELECT * FROM {$this->table} WHERE `id` = ?";
         $stmt = $c->prepare($sql);
         $stmt->execute([$this->getId()]);
-        $ad = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->setProperties($ad);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->setProperties($row);
     }
 
     public function setProperties(array $properties)
     {
-        $methods = get_class_methods($this);
         foreach ($properties as $key => $value) {
             $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
+            if (method_exists($this, $method)) {
                 $this->$method($value);
             }
         }
     }
 
-    public function save($c)
-    {
-        if ($this->getId() != null) {
-            $this->update();
-        } else {
-            $this->insert($c);
-        }
-    }
-
-    public function insert($c)
+    public function save(PDO $c)
     {
         $role = $_POST['role'];
         $seller_name = trim($_POST['seller_name']);
@@ -57,22 +47,52 @@ class Db
         $title = trim($_POST['title']);
         $description = trim($_POST['description']);
         $price = abs(round($_POST['price']));
-
-        $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//        $stmt = $c->prepare($sql);
-
-        $vals = [];
-        foreach ($this->cols as $col) {
-            $method = 'get' . ucfirst($col);
-            $vals[] = $this->$method();
-        }
-//        $stmt->execute($vals);
-        echo $sql;
         $insert_data = [$title, $description, $seller_name, $email, $phone, $price, $role, $allow_mails, $city_id, $category_id];
+
+        if ($this->getId() != null) {
+            try {
+                $this->update($c, $this->getId(), $insert_data);
+            } catch (Exception $e) {
+                $e->getMessage();
+            }
+        } else {
+            try {
+                $this->insert($c, $insert_data);
+            } catch (Exception $e) {
+                $e->getMessage();
+            }
+        }
     }
 
-    public function update()
+    public function insert(PDO $c, array $insert_data)
     {
+        $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $c->prepare($sql);
+        if (!$stmt->execute($insert_data)) {
+            throw new Exception('Произошла ошибка при попытке вставить данные.');
+        }
+    }
 
+    public function update(PDO $c, $id, array $insert_data)
+    {
+        $vals = [];
+        foreach ($this->cols as $col) {
+            $vals[] = $col . ' = ?';
+        }
+        $sql = "UPDATE {$this->table} SET " . implode(',', $vals) . " WHERE `id` = $id";
+        $stmt = $c->prepare($sql);
+        if (!$stmt->execute($insert_data)) {
+            throw new Exeption('Произошла ошибка при попытке обновить данные.');
+        }
+    }
+
+    public function delete(PDO $c, $id)
+    {
+        if ($this->getId() != null) {
+            $sql = "DELETE FROM {$this->table} WHERE id = $id";
+            if (!$c->query($sql)) {
+                throw new Exception('Произошла ошибка при удалении.');
+            }
+        }
     }
 }

@@ -15,40 +15,46 @@ $smarty->assign('cities', $city->fetchCities($c));
 $category = new Category;
 $smarty->assign('cats', $category->fetchCategories($c));
 
+$ad = new Ads;
+
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
     $id = (isset($_GET['id'])) ? (int) $_GET['id'] : '';
-    save($id, $connection);
+    $ad->setId($id);
+    $ad->save($c);
 }
 // удаление объявления
 elseif (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
-    if (delete($id, $connection)) {
+    $ad->setId($id);
+    try {
+        $ad->delete($c);
         header('location: index.php');
-    } else {
-        echo '<p>Ошибка при удалении.</p>';
+    }
+    catch (Exception $e) {
+        $e->getMessage();
     }
 }
 // главная страница
 elseif (!$_GET) {
     // получение всех объявлений
-    $ads = get_ads('', $connection);
+    $ads = $ad->fetchAll($c);
     $smarty->assign('ads', $ads);
-
-    show_form('', $ads, $smarty);
+    $smarty->display('index.tpl');
 }
 // страница выбранного объявления
 elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
     // получение выбранного объявления
-    $ads = get_ads((int) $_GET['id'], $connection);
-
-    if ($ads) {
-        show_form((int)$_GET['id'], $ads, $smarty);
+    $id = (int) $_GET['id'];
+    $ad->setId($id);
+    if ($ad->fetchById($c)) {
+        $smarty->assign('ad', $ad);
+        $smarty->display('index.tpl');
     } else {
-        page_not_found();
+        $smarty->display('not_found.tpl');
     }
 }
 // нанайденная страница
 else {
-    page_not_found();
+    $smarty->display('not_found.tpl');
 }

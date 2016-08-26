@@ -21,12 +21,17 @@ class Db
         $sql = "SELECT * FROM {$this->table} WHERE `id` = ?";
         $stmt = $c->prepare($sql);
         $stmt->execute([$this->getId()]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->setProperties($row);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $this->setProperties($row);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function setProperties(array $properties)
     {
+        // возможно, нужно добавить проверку на отличие полученного $properties от null
         foreach ($properties as $key => $value) {
             $method = 'set' . ucfirst($key);
             if (method_exists($this, $method)) {
@@ -64,7 +69,7 @@ class Db
         }
     }
 
-    public function insert(PDO $c, array $insert_data)
+    public function insert($c, array $insert_data)
     {
         $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $c->prepare($sql);
@@ -73,7 +78,7 @@ class Db
         }
     }
 
-    public function update(PDO $c, $id, array $insert_data)
+    public function update($c, $id, array $insert_data)
     {
         $vals = [];
         foreach ($this->cols as $col) {
@@ -86,10 +91,10 @@ class Db
         }
     }
 
-    public function delete(PDO $c, $id)
+    public function delete(PDO $c)
     {
         if ($this->getId() != null) {
-            $sql = "DELETE FROM {$this->table} WHERE id = $id";
+            $sql = "DELETE FROM {$this->table} WHERE id = {$this->getId()}";
             if (!$c->query($sql)) {
                 throw new Exception('Произошла ошибка при удалении.');
             }

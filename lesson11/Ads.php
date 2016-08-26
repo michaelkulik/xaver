@@ -79,7 +79,7 @@ class Ads extends Db
     /**
      * @param mixed $seller_name
      */
-    public function setSellerName($seller_name)
+    public function setSeller_name($seller_name)
     {
         $this->seller_name = $seller_name;
     }
@@ -159,7 +159,7 @@ class Ads extends Db
     /**
      * @param mixed $allow_mails
      */
-    public function setAllowMails($allow_mails)
+    public function setAllow_mails($allow_mails)
     {
         $this->allow_mails = $allow_mails;
     }
@@ -175,7 +175,7 @@ class Ads extends Db
     /**
      * @param mixed $city_id
      */
-    public function setCityId($city_id)
+    public function setCity_id($city_id)
     {
         $this->city_id = $city_id;
     }
@@ -191,10 +191,25 @@ class Ads extends Db
     /**
      * @param mixed $category_id
      */
-    public function setCategoryId($category_id)
+    public function setCategory_id($category_id)
     {
         $this->category_id = $category_id;
     }
 
-
+    public function fillData()
+    {
+        $temp = array(
+            'Seller_name' => 'Михаил',
+            'Email' => 'ivan@mail.ru',
+            'Phone' => '+79059051234',
+            'City_id' => '7',
+            'Category_id' => '3',
+            'Title' => 'Audi RS ' . substr(time(), -4, 4),
+            'Description' => 'ОТС. Звоните после 18:00.'
+        );
+        foreach ($temp as $key => $value) {
+            $method = 'set' . $key;
+            $this->$method($value);
+        }
+    }
 }

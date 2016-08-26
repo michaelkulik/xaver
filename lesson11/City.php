@@ -19,11 +19,27 @@ class City extends Db
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return mixed
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -33,6 +49,15 @@ class City extends Db
     {
         return $this->postcode;
     }
+
+    /**
+     * @param mixed $postcode
+     */
+    public function setPostcode($postcode)
+    {
+        $this->postcode = $postcode;
+    }
+    
 
     public function fetchCities(PDO $c)
     {

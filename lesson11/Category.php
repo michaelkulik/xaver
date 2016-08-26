@@ -19,11 +19,27 @@ class Category extends Db
     }
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return mixed
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -33,7 +49,15 @@ class Category extends Db
     {
         return $this->parent_id;
     }
-    
+
+    /**
+     * @param mixed $parent_id
+     */
+    public function setParent_id($parent_id)
+    {
+        $this->parent_id = $parent_id;
+    }
+
     public function fetchCategories(PDO $c)
     {
         $records = parent::fetchAll($c);

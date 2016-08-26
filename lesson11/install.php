@@ -22,7 +22,7 @@ class Install
         }
 
         // запись дескриптора подключения к БД в config.inc.php
-        $put = "\r\n\$connection = new PDO('mysql:host=$server_name;dbname=$database_name;charset=utf8', '$username', '$password');";
+        $put = "\r\n\$c = new PDO('mysql:host=$server_name;dbname=$database_name;charset=utf8', '$username', '$password');";
 
         if (!file_put_contents('config.inc.php', $put, FILE_APPEND)) {
             echo 'Ошибка создания подключения к базе данных <a href="install.php">Назад</a>';

@@ -19,9 +19,14 @@ $ad = new Ads;
 
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
-    $id = (isset($_GET['id'])) ? (int) $_GET['id'] : '';
+    $id = (isset($_GET['id'])) ? (int) $_GET['id'] : null;
     $ad->setId($id);
-    $ad->save($c);
+    try {
+        $ad->save($c);
+        header('location: index.php');
+    } catch (Exception $e) {
+        $e->getMessage();
+    }
 }
 // удаление объявления
 elseif (isset($_GET['delete'])) {
@@ -39,7 +44,8 @@ elseif (isset($_GET['delete'])) {
 elseif (!$_GET) {
     // получение всех объявлений
     $ads = $ad->fetchAll($c);
-    $smarty->assign('ads', $ads);
+    if (isset($_POST['fill'])) $ad->fillData();
+    $smarty->assign(['ads' => $ads, 'ad' => $ad]);
     $smarty->display('index.tpl');
 }
 // страница выбранного объявления
@@ -48,6 +54,7 @@ elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
     $id = (int) $_GET['id'];
     $ad->setId($id);
     if ($ad->fetchById($c)) {
+        if (isset($_POST['fill'])) $ad->fillData();
         $smarty->assign('ad', $ad);
         $smarty->display('index.tpl');
     } else {

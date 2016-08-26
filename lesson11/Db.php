@@ -31,7 +31,6 @@ class Db
 
     public function setProperties(array $properties)
     {
-        // возможно, нужно добавить проверку на отличие полученного $properties от null
         foreach ($properties as $key => $value) {
             $method = 'set' . ucfirst($key);
             if (method_exists($this, $method)) {
@@ -42,7 +41,7 @@ class Db
 
     public function save(PDO $c)
     {
-        $role = $_POST['role'];
+        $role = $_POST['role'] ?? null;
         $seller_name = trim($_POST['seller_name']);
         $email = trim($_POST['email']);
         $allow_mails = (isset($_POST['allow_mails'])) ? 'yes' : 'no';
@@ -55,17 +54,9 @@ class Db
         $insert_data = [$title, $description, $seller_name, $email, $phone, $price, $role, $allow_mails, $city_id, $category_id];
 
         if ($this->getId() != null) {
-            try {
-                $this->update($c, $this->getId(), $insert_data);
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+            $this->update($c, $this->getId(), $insert_data);
         } else {
-            try {
-                $this->insert($c, $insert_data);
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+            $this->insert($c, $insert_data);
         }
     }
 

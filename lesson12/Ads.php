@@ -14,6 +14,9 @@ class Ads
     private $city_id;
     private $category_id;
 
+    private $table = 'ads';
+    private $cols = ['id', 'title', 'description', 'seller_name', 'email', 'phone', 'price', 'role', 'allow_mails', 'city_id', 'category_id'];
+
     public function __construct($ad)
     {
         // если это редактирование объявления
@@ -83,7 +86,7 @@ class Ads
     /**
      * @return mixed
      */
-    public function getSellerName()
+    public function getSeller_name()
     {
         return $this->seller_name;
     }
@@ -163,7 +166,7 @@ class Ads
     /**
      * @return mixed
      */
-    public function getAllowMails()
+    public function getAllow_mails()
     {
         return $this->allow_mails;
     }
@@ -179,7 +182,7 @@ class Ads
     /**
      * @return mixed
      */
-    public function getCityId()
+    public function getCity_id()
     {
         return $this->city_id;
     }
@@ -195,7 +198,7 @@ class Ads
     /**
      * @return mixed
      */
-    public function getCategoryId()
+    public function getCategory_id()
     {
         return $this->category_id;
     }
@@ -210,35 +213,49 @@ class Ads
 
     public function save(PDO $db)
     {
-        $insert_data = [$this->getTitle(), $this->getDescription(), $this->getSellerName(), $this->getEmail(), $this->getPhone(), $this->getPrice(), $this->getRole(), $this->getAllowMails(), $this->getCityId(), $this->getCategoryId()];
-        if ($this->getId() != null) {
-            $this->update($db, $this->getId(), $insert_data);
-        } else {
-            $this->insert($db, $insert_data);
+        // в $data положим данные для вставки в запрос
+        $data = [];
+        foreach ($this->cols as $key) {
+            $method = 'get' . ucfirst($key);
+            $data[] =  $this->$method();
         }
+
+        $sql = "REPLACE INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($data);
+        if (!($stmt->rowCount() > 0)) {
+            throw new Exception('Произошла ошибка при добавлении/редактировании данных.');
+        }
+//        if ($this->getId() != null) {
+//            $this->update($db, $this->getId(), $data);
+//        } else {
+//            $this->insert($db, $data);
+//        }
     }
 
-    public function insert($c, array $insert_data)
-    {
-        $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $c->prepare($sql);
-        if (!$stmt->execute($insert_data)) {
-            throw new Exception('Произошла ошибка при попытке вставить данные.');
-        }
-    }
-
-    public function update($c, $id, array $insert_data)
-    {
-        $vals = [];
-        foreach ($this->cols as $col) {
-            $vals[] = $col . ' = ?';
-        }
-        $sql = "UPDATE {$this->table} SET " . implode(',', $vals) . " WHERE `id` = $id";
-        $stmt = $c->prepare($sql);
-        if (!$stmt->execute($insert_data)) {
-            throw new Exeption('Произошла ошибка при попытке обновить данные.');
-        }
-    }
+//    public function insert($db, array $data)
+//    {
+//        $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//        $stmt = $db->prepare($sql);
+//        $stmt->execute($data);
+//        if (!($stmt->rowCount() > 0)) {
+//            throw new Exception('Произошла ошибка при добавлении данных.');
+//        }
+//    }
+//
+//    public function update($db, $id, array $data)
+//    {
+//        $vals = [];
+//        foreach ($this->cols as $col) {
+//            $vals[] = $col . ' = ?';
+//        }
+//        $sql = "UPDATE {$this->table} SET " . implode(',', $vals) . " WHERE `id` = $id";
+//        $stmt = $db->prepare($sql);
+//        $stmt->execute($data);
+//        if (!($stmt->rowCount() > 0)) {
+//            throw new Exeption('Произошла ошибка при попытке обновить данные.');
+//        }
+//    }
 
     public function delete(PDO $c)
     {

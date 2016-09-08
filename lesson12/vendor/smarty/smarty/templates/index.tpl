@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <form method="post">
-                <input type="hidden" value="{if isset($ad)}{$ad->getId()}{/if}">
+                <input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">

@@ -37,5 +37,5 @@ class Db
                 $this->$method($value);
             }
         }
-    }
+    }                   
 }

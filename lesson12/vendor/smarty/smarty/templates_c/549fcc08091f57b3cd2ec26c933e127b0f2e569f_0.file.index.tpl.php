@@ -1,22 +1,52 @@
-{include file="header.tpl"}
+<?php
+/* Smarty version 3.1.30, created on 2016-09-09 05:01:03
+  from "/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_57d2420fd36a70_80423032',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '549fcc08091f57b3cd2ec26c933e127b0f2e569f' => 
+    array (
+      0 => '/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl',
+      1 => 1473397244,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:header.tpl' => 1,
+    'file:footer.tpl' => 1,
+  ),
+),false)) {
+function content_57d2420fd36a70_80423032 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_function_html_options')) require_once '/var/www/public/xaver/lesson12/vendor/smarty/smarty/libs/plugins/function.html_options.php';
+$_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
 
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <form method="post">
-                <input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">
+                <input type="hidden" name="id" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getId();
+}?>">
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="role" value="private" {if isset($ad) && $ad->getRole() eq 'private'} checked="" {elseif empty($smarty.get)} checked="" {/if}>
+                                <input type="radio" name="role" value="private" <?php if (isset($_smarty_tpl->tpl_vars['ad']->value) && $_smarty_tpl->tpl_vars['ad']->value->getRole() == 'private') {?> checked="" <?php } elseif (empty($_GET)) {?> checked="" <?php }?>>
                                 Частное лицо
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="role" value="company" {if isset($ad) && $ad->getRole() eq 'company'} checked="" {/if}>
+                                <input type="radio" name="role" value="company" <?php if (isset($_smarty_tpl->tpl_vars['ad']->value) && $_smarty_tpl->tpl_vars['ad']->value->getRole() == 'company') {?> checked="" <?php }?>>
                                 Компания
                             </label>
                         </div>
@@ -25,13 +55,17 @@
                 <div class="form-group row">
                     <label for="name" class="col-sm-4 form-control-label">Ваше имя</label>
                     <div class="col-sm-8">
-                        <input type="text" name="seller_name" class="form-control" id="name" placeholder="Имя" value="{if isset($ad)}{$ad->getSeller_name()}{/if}">
+                        <input type="text" name="seller_name" class="form-control" id="name" placeholder="Имя" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getSeller_name();
+}?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="email" class="col-sm-4 form-control-label">Email</label>
                     <div class="col-sm-8">
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{if isset($ad)}{$ad->getEmail()}{/if}">
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getEmail();
+}?>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -39,7 +73,7 @@
                     <div class="col-sm-8">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="allow_mails" {if isset($ad) && $ad->getAllow_mails() eq 'yes'} checked="" {/if}> Я не хочу получать вопросы по объявлению по e-mail
+                                <input type="checkbox" name="allow_mails" <?php if (isset($_smarty_tpl->tpl_vars['ad']->value) && $_smarty_tpl->tpl_vars['ad']->value->getAllow_mails() == 'yes') {?> checked="" <?php }?>> Я не хочу получать вопросы по объявлению по e-mail
                             </label>
                         </div>
                     </div>
@@ -47,7 +81,9 @@
                 <div class="form-group row">
                     <label for="phone" class="col-sm-4 form-control-label">Телефон</label>
                     <div class="col-sm-8">
-                        <input type="tel" name="phone" class="form-control" id="phone" placeholder="Телефон" value="{if isset($ad)}{$ad->getPhone()}{/if}">
+                        <input type="tel" name="phone" class="form-control" id="phone" placeholder="Телефон" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getPhone();
+}?>">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -56,7 +92,8 @@
                         <select name="city_id" class="form-control" id="cities">
                             <option>-- Выберите город --</option>
                             <option disabled="disabled">-- Города --</option>
-                            {html_options options = $cities selected = (isset($ad)) ? $ad->getCity_id() : null}
+                            <?php echo smarty_function_html_options(array('options'=>$_smarty_tpl->tpl_vars['cities']->value,'selected'=>isset($_smarty_tpl->tpl_vars['ad']->value) ? $_smarty_tpl->tpl_vars['ad']->value->getCity_id() : null),$_smarty_tpl);?>
+
                         </select>
                     </div>
                 </div>
@@ -65,35 +102,52 @@
                     <div class="col-sm-8">
                         <select name="category_id" class="form-control" id="categories">
                             <option>-- Выберите категорию --</option>
-                            {foreach from = $cats item = parent_cat}
-                                <optgroup label="{$parent_cat.0}">
-                                    {html_options options = $parent_cat.sub selected = (isset($ad)) ? $ad->getCategory_id() : null}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['cats']->value, 'parent_cat');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['parent_cat']->value) {
+?>
+                                <optgroup label="<?php echo $_smarty_tpl->tpl_vars['parent_cat']->value[0];?>
+">
+                                    <?php echo smarty_function_html_options(array('options'=>$_smarty_tpl->tpl_vars['parent_cat']->value['sub'],'selected'=>isset($_smarty_tpl->tpl_vars['ad']->value) ? $_smarty_tpl->tpl_vars['ad']->value->getCategory_id() : null),$_smarty_tpl);?>
+
                                 </optgroup>
-                            {/foreach}
+                            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="title" class="col-sm-4 form-control-label">Название объявления</label>
                     <div class="col-sm-8">
-                        <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
+                        <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getTitle();
+}?>">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="description" class="col-sm-4 form-control-label">Описание объявления</label>
                     <div class="col-sm-8">
-                        <textarea name="description" class="form-control" id="description" rows="3">{if isset($ad)}{$ad->getDescription()}{/if}</textarea>
+                        <textarea name="description" class="form-control" id="description" rows="3"><?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getDescription();
+}?></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="price" class="col-sm-4 form-control-label">Цена</label>
                     <div class="col-sm-3">
-                        <input type="number" name="price" class="form-control" id="price" placeholder="0" value="{if isset($ad)}{$ad->getPrice()}{/if}">
+                        <input type="number" name="price" class="form-control" id="price" placeholder="0" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getPrice();
+}?>">
                     </div>
                     <label class="col-sm-2 form-control-label">руб.</label>
                 </div>
                 <div class="form-group row">
-                    {if isset($smarty.get.id)}
+                    <?php if (isset($_GET['id'])) {?>
                         <div class="col-sm-7">
                             <a href="index.php" class="btn btn-secondary">Назад</a>
                         </div>
@@ -101,18 +155,18 @@
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
                             <button name="submit" class="btn btn-success">Сохранить</button>
                         </div>
-                    {else}
+                    <?php } else { ?>
                         <div class="col-sm-5 col-sm-offset-7">
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
                             <button name="submit" class="btn btn-success">Добавить</button>
                         </div>
-                    {/if}
+                    <?php }?>
                 </div>
             </form>
         </div>
     </div>
     <br>
-    {if !isset($smarty.get.id)}
+    <?php if (!isset($_GET['id'])) {?>
         <div class="row">
             <div class="col-xs-12 col-lg-8 col-lg-offset-2">
                 <h4>Уже опубликованные объявления</h4>
@@ -123,11 +177,12 @@
                         <th>Имя</th>
                         <th>&nbsp;</th>
                     </tr>
-                    {if isset($ads_rows)}
-                        {$ads_rows}
-                    {else}
+                    <?php if (isset($_smarty_tpl->tpl_vars['ads_rows']->value)) {?>
+                        <?php echo $_smarty_tpl->tpl_vars['ads_rows']->value;?>
+
+                    <?php } else { ?>
                         <tr><td colspan="4">Пока объявлений нет.</td></tr>
-                    {/if}
+                    <?php }?>
                 </table>
                 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -147,16 +202,24 @@
                 </div>
             </div>
         </div>
-    {/if}
+    <?php }?>
 </div>
 
 <!-- jQuery first, then Bootstrap JS. -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
-<script>
-    $('#confirm-delete').on('show.bs.modal', function(e) {ldelim}
+<?php echo '<script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+>
+    $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-        {rdelim});
-</script>
+        });
+<?php echo '</script'; ?>
+>
 
-{include file="footer.tpl"}
+<?php $_smarty_tpl->_subTemplateRender("file:footer.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+}
+}

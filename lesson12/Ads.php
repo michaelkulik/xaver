@@ -15,11 +15,12 @@ class Ads
     private $category_id;
 
     private $table = 'ads';
+    // список свойств и, соответственно, колонок в БД, которые подлежат актуализации
     private $cols = ['id', 'title', 'description', 'seller_name', 'email', 'phone', 'price', 'role', 'allow_mails', 'city_id', 'category_id'];
 
     public function __construct($ad)
     {
-        // если это редактирование объявления
+        // если это редактирование объявления, то помещаем значение id в свойство $id
         if (isset($ad['id'])) {
             $this->id = $ad['id'];
         }
@@ -211,6 +212,11 @@ class Ads
         $this->category_id = $category_id;
     }
 
+    /**
+     * Метод сохранения и редактирования объявления
+     * @param PDO $db
+     * @throws Exception
+     */
     public function save(PDO $db)
     {
         // в $data положим данные для вставки в запрос
@@ -219,7 +225,6 @@ class Ads
             $method = 'get' . ucfirst($key);
             $data[] =  $this->$method();
         }
-
         $sql = "REPLACE INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         $stmt->execute($data);

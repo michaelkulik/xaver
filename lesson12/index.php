@@ -4,6 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once 'config.inc.php';
 require_once 'Ads.php';
+require_once 'AdsStore.php';
 require_once 'City.php';
 require_once 'Category.php';
 
@@ -43,9 +44,13 @@ elseif (isset($_GET['delete'])) {
 // главная страница
 elseif (!$_GET) {
     // получение всех объявлений
-    $ads = $ad->fetchAll($c);
-    if (isset($_POST['fill'])) $ad->fillData();
-    $smarty->assign(['ads' => $ads, 'ad' => $ad]);
+//    $ads = $ad->fetchAll($c);
+//    if (isset($_POST['fill'])) $ad->fillData();
+//    $smarty->assign(['ads' => $ads, 'ad' => $ad]);
+    $main = AdsStore::getInstance();
+    $main->getAllAdsFromDb($db);
+//    var_dump($main);exit;
+    $main->writeOut($smarty);
     $smarty->display('index.tpl');
 }
 // страница выбранного объявления

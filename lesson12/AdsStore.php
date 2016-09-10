@@ -27,7 +27,7 @@ class AdsStore
         if (!($this instanceof AdsStore)) {
             die('Нельзя использовать этот метод в конструкторе класса.');
         }
-        $this->ads[$ad->getId()] = $ad;
+        $this->ads[] = $ad;
     }
 
     /**
@@ -41,18 +41,47 @@ class AdsStore
 
         foreach ($all as $value) {
             $ad = new Ads($value);
-            $this->addAds($ad); // помещаем объекты в хранилище
+            self::addAds($ad); // помещаем объекты в хранилище
         }
+        return $this->ads;
     }
 
-
-    public function writeOut($smarty)
+    public function getAdById(PDO $db, $id)
     {
-        $row = '';
-        foreach ($this->ads as $value) {
-            $smarty->assign('ad', $value);
-            $row .= $smarty->fetch('table_row.tpl.html');
+        $sql = "SELECT * FROM ads WHERE `id` = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $ad = new Ads($row);
+            self::addAds($ad);
+            return $this->ads[0];
+        } else {
+            return false;
         }
-        $smarty->assign('ads_rows', $row);
     }
+
+    public static function fillData()
+    {
+        $temp = array(
+            'seller_name' => 'Михаил',
+            'email' => 'ivan@mail.ru',
+            'phone' => '+79059051234',
+            'city_id' => '7',
+            'category_id' => '3',
+            'title' => 'Audi RS ' . substr(time(), -4, 4),
+            'description' => 'ОТС. Звоните после 18:00.'
+        );
+        $ad = new Ads($temp);
+        return $ad;
+    }
+    
+//    public function writeOut($smarty)
+//    {
+//        $row = '';
+//        foreach ($this->ads as $value) {
+//            $smarty->assign('ad', $value);
+//            $row .= $smarty->fetch('table_row.tpl.html');
+//        }
+//        $smarty->assign('ads', $row);
+//    }
 }

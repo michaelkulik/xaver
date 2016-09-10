@@ -17,20 +17,7 @@ class Db
         }
         return $records;
     }
-
-    public function fetchById(PDO $db)
-    {
-        $sql = "SELECT * FROM {$this->table} WHERE `id` = ?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$this->getId()]);
-        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $this->setProperties($row);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    
     public function setProperties(array $properties)
     {
         foreach ($properties as $key => $value) {
@@ -39,5 +26,5 @@ class Db
                 $this->$method($value);
             }
         }
-    }                   
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+error_reporting();
+
 header('Content-Type: text/html; charset=utf-8');
 
 require_once 'config.inc.php';
@@ -15,8 +17,6 @@ $smarty->assign('cities', $city->fetchCities($db));
 // получение списка категорий
 $category = new Category;
 $smarty->assign('cats', $category->fetchCategories($db));
-
-//$ad = new Ads;
 
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
@@ -44,24 +44,18 @@ elseif (isset($_GET['delete'])) {
 // главная страница
 elseif (!$_GET) {
     // получение всех объявлений
-//    $ads = $ad->fetchAll($c);
-//    if (isset($_POST['fill'])) $ad->fillData();
-//    $smarty->assign(['ads' => $ads, 'ad' => $ad]);
-    $main = AdsStore::getInstance();
-    $main->getAllAdsFromDb($db);
-//    var_dump($main);exit;
-    $main->writeOut($smarty);
-    $smarty->display('index.tpl');
+    $ads = AdsStore::getInstance()->getAllAdsFromDb($db);
+    $ad = (isset($_POST['fill'])) ? AdsStore::fillData() : null; // заполнение формы произвольными данными
+    $smarty->assign(['ads' => $ads, 'ad' => $ad])->display('index.tpl');
 }
 // страница выбранного объявления
 elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
     // получение выбранного объявления
     $id = (int) $_GET['id'];
-    $ad->setId($id);
-    if ($ad->fetchById($c)) {
-        if (isset($_POST['fill'])) $ad->fillData();
-        $smarty->assign('ad', $ad);
-        $smarty->display('index.tpl');
+    $ad = AdsStore::getInstance()->getAdById($db, $id);
+    if ($ad) {
+        if (isset($_POST['fill'])) $ad = AdsStore::fillData(); // заполнение формы произвольными данными
+        $smarty->assign('ad', $ad)->display('index.tpl');
     } else {
         $smarty->display('not_found.tpl');
     }
@@ -70,3 +64,7 @@ elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
 else {
     $smarty->display('not_found.tpl');
 }
+//    echo '<pre>';
+//    var_dump($ads);
+//    echo '</pre>';
+//    exit;

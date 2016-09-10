@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2016-09-09 05:01:03
+/* Smarty version 3.1.30, created on 2016-09-10 04:04:51
   from "/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_57d2420fd36a70_80423032',
+  'unifunc' => 'content_57d38663964ea2_48719569',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '549fcc08091f57b3cd2ec26c933e127b0f2e569f' => 
     array (
       0 => '/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl',
-      1 => 1473397244,
+      1 => 1473480294,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_57d2420fd36a70_80423032 (Smarty_Internal_Template $_smarty_tpl) {
+function content_57d38663964ea2_48719569 (Smarty_Internal_Template $_smarty_tpl) {
 if (!is_callable('smarty_function_html_options')) require_once '/var/www/public/xaver/lesson12/vendor/smarty/smarty/libs/plugins/function.html_options.php';
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
@@ -32,9 +32,7 @@ $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_sm
     <div class="row">
         <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <form method="post">
-                <input type="hidden" name="id" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
-echo $_smarty_tpl->tpl_vars['ad']->value->getId();
-}?>">
+                
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">
@@ -175,14 +173,35 @@ echo $_smarty_tpl->tpl_vars['ad']->value->getPrice();
                         <th>Название объявления</th>
                         <th>Цена</th>
                         <th>Имя</th>
-                        <th>&nbsp;</th>
+                        <th>Действия</th>
                     </tr>
-                    <?php if (isset($_smarty_tpl->tpl_vars['ads_rows']->value)) {?>
-                        <?php echo $_smarty_tpl->tpl_vars['ads_rows']->value;?>
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['ads']->value, 'ad');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['ad']->value) {
+?>
+                        <tr>
+                            <td><a href='?id=<?php echo $_smarty_tpl->tpl_vars['ad']->value->getId();?>
+'><?php echo $_smarty_tpl->tpl_vars['ad']->value->getTitle();?>
+</a></td>
+                            <td><?php echo $_smarty_tpl->tpl_vars['ad']->value->getPrice();?>
+</td>
+                            <td><?php echo $_smarty_tpl->tpl_vars['ad']->value->getSeller_name();?>
+</td>
+                            <td><a href='#' data-href='?delete=<?php echo $_smarty_tpl->tpl_vars['ad']->value->getId();?>
+' data-toggle='modal' data-target='#confirm-delete'>Удалить</a></td>
+                        </tr>
+                        <?php
+}
+} else {
+?>
 
-                    <?php } else { ?>
                         <tr><td colspan="4">Пока объявлений нет.</td></tr>
-                    <?php }?>
+                    <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
                 </table>
                 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

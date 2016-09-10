@@ -18,7 +18,7 @@ class Ads
     // список свойств и, соответственно, колонок в БД, которые подлежат актуализации
     private $cols = ['id', 'title', 'description', 'seller_name', 'email', 'phone', 'price', 'role', 'allow_mails', 'city_id', 'category_id'];
 
-    public function __construct($ad)
+    public function __construct($ad = null)
     {
         // если это редактирование объявления, то помещаем значение id в свойство $id
         if (isset($ad['id'])) {
@@ -29,7 +29,7 @@ class Ads
         $this->seller_name = trim($ad['seller_name']);
         $this->email = trim($ad['email']);
         $this->phone = trim($ad['phone']);
-        $this->price = abs(round($ad['price']));
+        $this->price = isset($ad['price']) ? abs(round($ad['price'])) : null;
         $this->role = isset($ad['role']) ? $ad['role'] : null;
         $this->allow_mails = isset($ad['allow_mails']) ? 'yes' : 'no';
         $this->city_id = $ad['city_id'];
@@ -219,12 +219,12 @@ class Ads
      */
     public function save(PDO $db)
     {
-        // в $data положим данные для вставки в запрос
-        $data = [];
+        $data = []; // в $data положим данные для вставки в запрос SQL
         foreach ($this->cols as $key) {
             $method = 'get' . ucfirst($key);
             $data[] =  $this->$method();
         }
+
         $sql = "REPLACE INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         $stmt->execute($data);
@@ -269,23 +269,6 @@ class Ads
             if (!$c->query($sql)) {
                 throw new Exception('Произошла ошибка при удалении.');
             }
-        }
-    }
-
-    public function fillData()
-    {
-        $temp = array(
-            'Seller_name' => 'Михаил',
-            'Email' => 'ivan@mail.ru',
-            'Phone' => '+79059051234',
-            'City_id' => '7',
-            'Category_id' => '3',
-            'Title' => 'Audi RS ' . substr(time(), -4, 4),
-            'Description' => 'ОТС. Звоните после 18:00.'
-        );
-        foreach ($temp as $key => $value) {
-            $method = 'set' . $key;
-            $this->$method($value);
         }
     }
 }

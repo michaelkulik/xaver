@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <form method="post">
-                <input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">
+                {*<input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">*}
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">
@@ -121,13 +121,18 @@
                         <th>Название объявления</th>
                         <th>Цена</th>
                         <th>Имя</th>
-                        <th>&nbsp;</th>
+                        <th>Действия</th>
                     </tr>
-                    {if isset($ads_rows)}
-                        {$ads_rows}
-                    {else}
+                    {foreach from = $ads item = ad}
+                        <tr>
+                            <td><a href='?id={$ad->getId()}'>{$ad->getTitle()}</a></td>
+                            <td>{$ad->getPrice()}</td>
+                            <td>{$ad->getSeller_name()}</td>
+                            <td><a href='#' data-href='?delete={$ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>Удалить</a></td>
+                        </tr>
+                        {foreachelse}
                         <tr><td colspan="4">Пока объявлений нет.</td></tr>
-                    {/if}
+                    {/foreach}
                 </table>
                 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

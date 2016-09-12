@@ -2,20 +2,20 @@
 
 <div class="container">
     <div class="row" style="margin-top: 10px;">
-        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-8">
             <style>
                 label::after {ldelim}
                     color: red; content: " *";
                 {rdelim}
             </style>
             {if isset($success)}
-                <div class="col-xs-12">
+                <div class="col-xs-12 alert alert-success" role="alert">
                     <p>Поздравляем! Дамп базы данных сделан успешно, нажмите на кнопку ниже, чтобы перейти на сайт.</p>
                     <a href="index.php" class="btn btn-success">Перейти на сайт</a>
                 </div>
             {elseif isset($error)}
-                <div class="col-xs-12">
-                    <p>Произошла ошибка при выполнении дампа базы данных. Пожалуйста, попытайтесь снова.</p>
+                <div class="col-xs-12 alert alert-danger" role="alert">
+                    <p>Произошла ошибка при работе с базой данных. Пожалуйста, попытайтесь снова.</p>
                     <a href="install.php" class="btn btn-secondary">Попробовать снова</a>
                 </div>
             {else}

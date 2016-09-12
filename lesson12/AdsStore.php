@@ -46,6 +46,12 @@ class AdsStore
         return $this->ads;
     }
 
+    /**
+     * Метод получает выбранное объявление и кладёт его в хранилище
+     * @param PDO $db
+     * @param $id
+     * @return bool|mixed
+     */
     public function getAdById(PDO $db, $id)
     {
         $sql = "SELECT * FROM ads WHERE `id` = ?";
@@ -60,11 +66,16 @@ class AdsStore
         }
     }
 
+    /**
+     * Метод для заполнения произвольными данными поля формы
+     * @return Ads
+     */
     public static function fillData()
     {
         $temp = array(
+            'id' => isset($_POST['id']) ? $_POST['id'] : null,
             'seller_name' => 'Михаил',
-            'email' => 'ivan@mail.ru',
+            'email' => 'michael@mail.ru',
             'phone' => '+79059051234',
             'city_id' => '7',
             'category_id' => '3',
@@ -74,14 +85,4 @@ class AdsStore
         $ad = new Ads($temp);
         return $ad;
     }
-    
-//    public function writeOut($smarty)
-//    {
-//        $row = '';
-//        foreach ($this->ads as $value) {
-//            $smarty->assign('ad', $value);
-//            $row .= $smarty->fetch('table_row.tpl.html');
-//        }
-//        $smarty->assign('ads', $row);
-//    }
 }

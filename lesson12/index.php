@@ -1,7 +1,5 @@
 <?php
 
-error_reporting();
-
 header('Content-Type: text/html; charset=utf-8');
 
 require_once 'config.inc.php';
@@ -20,25 +18,24 @@ $smarty->assign('cats', $category->fetchCategories($db));
 
 // добавление и редактирование объявления
 if (isset($_POST['submit'])) {
-    $id = (isset($_GET['id'])) ? (int) $_GET['id'] : null;
     $ad = new Ads($_POST);
     try {
         $ad->save($db);
         header('location: index.php');
     } catch (Exception $e) {
-        $e->getMessage();
+        $smarty->assign('error', $e->getMessage())->display('error.tpl');
     }
 }
 // удаление объявления
-elseif (isset($_GET['delete'])) {
+elseif (isset($_GET['delete']) && $_GET['delete'] > 0) {
     $id = (int) $_GET['delete'];
-    $ad->setId($id);
+    $ad = new Ads();
     try {
-        $ad->delete($c);
+        $ad->delete($db, $id);
         header('location: index.php');
     }
     catch (Exception $e) {
-        $e->getMessage();
+        $smarty->assign('error', $e->getMessage())->display('error.tpl');
     }
 }
 // главная страница
@@ -50,7 +47,6 @@ elseif (!$_GET) {
 }
 // страница выбранного объявления
 elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
-    // получение выбранного объявления
     $id = (int) $_GET['id'];
     $ad = AdsStore::getInstance()->getAdById($db, $id);
     if ($ad) {
@@ -64,7 +60,3 @@ elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
 else {
     $smarty->display('not_found.tpl');
 }
-//    echo '<pre>';
-//    var_dump($ads);
-//    echo '</pre>';
-//    exit;

@@ -31,7 +31,15 @@ class Ads
         $this->phone = trim($ad['phone']);
         $this->price = isset($ad['price']) ? abs(round($ad['price'])) : null;
         $this->role = isset($ad['role']) ? $ad['role'] : null;
-        $this->allow_mails = isset($ad['allow_mails']) ? 'yes' : 'no';
+        if (isset($ad['allow_mails'])) {
+            if ($ad['allow_mails'] == 'on') {
+                $this->allow_mails = 'yes';
+            } else {
+                $this->allow_mails = $ad['allow_mails'];
+            }
+        } else {
+            $this->allow_mails = 'no';
+        }
         $this->city_id = $ad['city_id'];
         $this->category_id = $ad['category_id'];
     }
@@ -224,51 +232,21 @@ class Ads
             $method = 'get' . ucfirst($key);
             $data[] =  $this->$method();
         }
-
-        $sql = "REPLACE INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "REPLACE INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
         $stmt->execute($data);
         if (!($stmt->rowCount() > 0)) {
             throw new Exception('Произошла ошибка при добавлении/редактировании данных.');
         }
-//        if ($this->getId() != null) {
-//            $this->update($db, $this->getId(), $data);
-//        } else {
-//            $this->insert($db, $data);
-//        }
     }
 
-//    public function insert($db, array $data)
-//    {
-//        $sql = "INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//        $stmt = $db->prepare($sql);
-//        $stmt->execute($data);
-//        if (!($stmt->rowCount() > 0)) {
-//            throw new Exception('Произошла ошибка при добавлении данных.');
-//        }
-//    }
-//
-//    public function update($db, $id, array $data)
-//    {
-//        $vals = [];
-//        foreach ($this->cols as $col) {
-//            $vals[] = $col . ' = ?';
-//        }
-//        $sql = "UPDATE {$this->table} SET " . implode(',', $vals) . " WHERE `id` = $id";
-//        $stmt = $db->prepare($sql);
-//        $stmt->execute($data);
-//        if (!($stmt->rowCount() > 0)) {
-//            throw new Exeption('Произошла ошибка при попытке обновить данные.');
-//        }
-//    }
-
-    public function delete(PDO $c)
+    public function delete(PDO $db, $id)
     {
-        if ($this->getId() != null) {
-            $sql = "DELETE FROM {$this->table} WHERE id = {$this->getId()}";
-            if (!$c->query($sql)) {
-                throw new Exception('Произошла ошибка при удалении.');
-            }
+        $sql = "DELETE FROM {$this->table} WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        if ( !($stmt->rowCount() > 0) ) {
+            throw new Exception('Произошла ошибка при удалении.');
         }
     }
 }

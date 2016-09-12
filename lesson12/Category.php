@@ -1,8 +1,6 @@
 <?php
 
-require_once 'Db.php';
-
-class Category extends Db
+class Category
 {
     protected $table = 'categories';
 
@@ -60,7 +58,14 @@ class Category extends Db
 
     public function fetchCategories(PDO $db)
     {
-        $records = parent::fetchAll($db);
+        $sql = 'SELECT * FROM ' . $this->table;
+        $res = $db->query($sql);
+        $records = [];
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+            $temp = new $this();
+            $temp->setProperties($row);
+            $records[] = $temp;
+        }
         $cats = [];
         foreach ($records as $record) {
             if(!$record->getParentId()){ // если parent_id = 0
@@ -70,5 +75,15 @@ class Category extends Db
             }
         }
         return $cats;
+    }
+
+    public function setProperties(array $properties)
+    {
+        foreach ($properties as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
     }
 }

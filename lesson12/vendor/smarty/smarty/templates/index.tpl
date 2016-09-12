@@ -1,10 +1,11 @@
 {include file="header.tpl"}
 
 <div class="container">
+    <br>
     <div class="row">
-        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-6">
             <form method="post">
-                {*<input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">*}
+                <input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">
@@ -94,27 +95,24 @@
                 </div>
                 <div class="form-group row">
                     {if isset($smarty.get.id)}
-                        <div class="col-sm-7">
+                        <div class="col-xs-12 col-lg-5">
                             <a href="index.php" class="btn btn-secondary">Назад</a>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-xs-12 col-lg-7">
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
                             <button name="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     {else}
-                        <div class="col-sm-5 col-sm-offset-7">
+                        <div class="col-lg-12">
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
-                            <button name="submit" class="btn btn-success">Добавить</button>
+                            <button name="submit" class="btn btn-success">Добавить объявление</button>
                         </div>
                     {/if}
                 </div>
             </form>
         </div>
-    </div>
-    <br>
-    {if !isset($smarty.get.id)}
-        <div class="row">
-            <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-6">
+            {if !isset($smarty.get.id)}
                 <h4>Уже опубликованные объявления</h4>
                 <table class="table">
                     <tr>
@@ -150,14 +148,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            {/if}
         </div>
-    {/if}
+    </div>
 </div>
 
-<!-- jQuery first, then Bootstrap JS. -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
 <script>
     $('#confirm-delete').on('show.bs.modal', function(e) {ldelim}
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));

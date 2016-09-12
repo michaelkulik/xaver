@@ -1,8 +1,6 @@
 <?php
 
-require_once "Db.php";
-
-class City extends Db
+class City
 {
     protected $table = 'cities';
 
@@ -61,11 +59,28 @@ class City extends Db
 
     public function fetchCities(PDO $db)
     {
-        $records = parent::fetchAll($db);
+        $sql = 'SELECT * FROM ' . $this->table;
+        $res = $db->query($sql);
+        $records = [];
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+            $temp = new $this();
+            $temp->setProperties($row);
+            $records[] = $temp;
+        }
         $cities = [];
         foreach ($records as $record) {
             $cities[$record->getId()] = $record->getName();
         }
         return $cities;
+    }
+
+    public function setProperties(array $properties)
+    {
+        foreach ($properties as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
     }
 }

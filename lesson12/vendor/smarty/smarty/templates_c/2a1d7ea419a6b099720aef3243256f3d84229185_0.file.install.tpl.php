@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2016-08-29 08:34:10
+/* Smarty version 3.1.30, created on 2016-09-12 10:16:00
   from "/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/install.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_57c3f382ac70c9_66986101',
+  'unifunc' => 'content_57d68060e413b1_06019440',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2a1d7ea419a6b099720aef3243256f3d84229185' => 
     array (
       0 => '/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/install.tpl',
-      1 => 1471779730,
+      1 => 1473675357,
       2 => 'file',
     ),
   ),
@@ -22,27 +22,27 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_57c3f382ac70c9_66986101 (Smarty_Internal_Template $_smarty_tpl) {
+function content_57d68060e413b1_06019440 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
 
 <div class="container">
     <div class="row" style="margin-top: 10px;">
-        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-8">
             <style>
                 label::after {
                     color: red; content: " *";
                 }
             </style>
             <?php if (isset($_smarty_tpl->tpl_vars['success']->value)) {?>
-                <div class="col-xs-12">
+                <div class="col-xs-12 alert alert-success" role="alert">
                     <p>Поздравляем! Дамп базы данных сделан успешно, нажмите на кнопку ниже, чтобы перейти на сайт.</p>
                     <a href="index.php" class="btn btn-success">Перейти на сайт</a>
                 </div>
             <?php } elseif (isset($_smarty_tpl->tpl_vars['error']->value)) {?>
-                <div class="col-xs-12">
-                    <p>Произошла ошибка при выполнении дампа базы данных. Пожалуйста, попытайтесь снова.</p>
+                <div class="col-xs-12 alert alert-danger" role="alert">
+                    <p>Произошла ошибка при работе с базой данных. Пожалуйста, попытайтесь снова.</p>
                     <a href="install.php" class="btn btn-secondary">Попробовать снова</a>
                 </div>
             <?php } else { ?>

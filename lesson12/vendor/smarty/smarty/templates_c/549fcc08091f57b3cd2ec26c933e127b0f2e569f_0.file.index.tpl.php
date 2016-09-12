@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2016-09-10 04:04:51
+/* Smarty version 3.1.30, created on 2016-09-12 09:57:32
   from "/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_57d38663964ea2_48719569',
+  'unifunc' => 'content_57d67c0c125297_90498691',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '549fcc08091f57b3cd2ec26c933e127b0f2e569f' => 
     array (
       0 => '/var/www/public/xaver/lesson12/vendor/smarty/smarty/templates/index.tpl',
-      1 => 1473480294,
+      1 => 1473674249,
       2 => 'file',
     ),
   ),
@@ -22,17 +22,20 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_57d38663964ea2_48719569 (Smarty_Internal_Template $_smarty_tpl) {
+function content_57d67c0c125297_90498691 (Smarty_Internal_Template $_smarty_tpl) {
 if (!is_callable('smarty_function_html_options')) require_once '/var/www/public/xaver/lesson12/vendor/smarty/smarty/libs/plugins/function.html_options.php';
 $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
 
 <div class="container">
+    <br>
     <div class="row">
-        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-6">
             <form method="post">
-                
+                <input type="hidden" name="id" value="<?php if (isset($_smarty_tpl->tpl_vars['ad']->value)) {
+echo $_smarty_tpl->tpl_vars['ad']->value->getId();
+}?>">
                 <div class="form-group row">
                     <label class="col-sm-4 form-control-label">Вы</label>
                     <div class="col-sm-8">
@@ -146,27 +149,24 @@ echo $_smarty_tpl->tpl_vars['ad']->value->getPrice();
                 </div>
                 <div class="form-group row">
                     <?php if (isset($_GET['id'])) {?>
-                        <div class="col-sm-7">
+                        <div class="col-xs-12 col-lg-5">
                             <a href="index.php" class="btn btn-secondary">Назад</a>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-xs-12 col-lg-7">
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
                             <button name="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     <?php } else { ?>
-                        <div class="col-sm-5 col-sm-offset-7">
+                        <div class="col-lg-12">
                             <button name="fill" class="btn btn-secondary">Заполнить</button>
-                            <button name="submit" class="btn btn-success">Добавить</button>
+                            <button name="submit" class="btn btn-success">Добавить объявление</button>
                         </div>
                     <?php }?>
                 </div>
             </form>
         </div>
-    </div>
-    <br>
-    <?php if (!isset($_GET['id'])) {?>
-        <div class="row">
-            <div class="col-xs-12 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-lg-6">
+            <?php if (!isset($_GET['id'])) {?>
                 <h4>Уже опубликованные объявления</h4>
                 <table class="table">
                     <tr>
@@ -219,17 +219,20 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php }?>
         </div>
-    <?php }?>
+    </div>
 </div>
 
-<!-- jQuery first, then Bootstrap JS. -->
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
 <?php echo '<script'; ?>
- src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"><?php echo '</script'; ?>
+ src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"><?php echo '</script'; ?>
 >
 <?php echo '<script'; ?>
- src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"><?php echo '</script'; ?>
+ src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"><?php echo '</script'; ?>
 >
 <?php echo '<script'; ?>
 >

@@ -20,4 +20,3 @@ $smarty->config_dir = SMARTY_DIRECTORY . 'configs';
 $smarty->assign('title', 'lesson12 | Xaver Course');
 
 // подключение к БД
-$db = new PDO('mysql:host=localhost;dbname=wall_of_ads;charset=utf8', 'dbuser', '123');

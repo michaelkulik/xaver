@@ -77,6 +77,7 @@ class AdsStore
             'seller_name' => 'Михаил',
             'email' => 'michael@mail.ru',
             'phone' => '+79059051234',
+            'role' => 'private',
             'city_id' => '7',
             'category_id' => '3',
             'title' => 'Audi RS ' . substr(time(), -4, 4),

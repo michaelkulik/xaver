@@ -1,0 +1,13 @@
+<tr>
+    <td>{$ad->getTitle()}</td>
+    <td>{$ad->getPrice()}</td>
+    <td>{$ad->getSeller_name()}</td>
+    <td>
+        <a title="Просмотреть | Редактировать" class="btn btn-info note" href="?id={$ad->getId()}">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </a>
+        <button title="Удалить" type="submit" class="btn btn-danger note" data-href='?delete={$ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </td>
+</tr>

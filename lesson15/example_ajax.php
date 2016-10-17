@@ -1,6 +1,14 @@
 <?php
-//$mass = ['text' => 'text 1', 'status' => 'status OK'];
-//echo json_encode($mass);
-print_r($_GET);
-?>
 
+include 'config.inc.php';
+
+//echo $_GET['delete']; exit;
+
+$sql = "DELETE FROM ads WHERE id = ?";
+$stmt = $db->prepare($sql);
+$stmt->execute([$_GET['delete']]);
+if ( !($stmt->rowCount() > 0) ) {
+    throw new Exception('Произошла ошибка при удалении.');
+} else {
+    echo 'Объявление с id = ' . $_GET['delete'] . ' удалён успешно!';
+}

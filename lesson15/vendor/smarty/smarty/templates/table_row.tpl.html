@@ -1,5 +1,6 @@
 <tr>
-    <td>{$n}</td>
+    <!--<td class="hide">{$table_ad->getId()}</td>-->
+    <td>{$table_ad->getId()}</td>
     <td>{$table_ad->getTitle()}</td>
     <td>{$table_ad->getPrice()}</td>
     <td>{$table_ad->getSeller_name()}</td>
@@ -7,7 +8,7 @@
         <a title="Просмотреть | Редактировать" class="btn btn-info note" href="?id={$table_ad->getId()}">
             <i class="glyphicon glyphicon-pencil"></i>
         </a>
-        <a href="#" title="Удалить" class="btn btn-danger note" data-href='?delete={$table_ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>
+        <a href="#" title="Удалить" class="delete btn btn-danger note" data-href='?delete={$table_ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>
             <i class="glyphicon glyphicon-trash"></i>
         </a>
     </td>

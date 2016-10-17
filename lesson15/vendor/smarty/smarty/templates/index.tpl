@@ -82,7 +82,7 @@
                         <div class="form-group row">
                             <label for="title" class="col-sm-4 form-control-label">Название объявления</label>
                             <div class="col-sm-8">
-                                <input type="text" name="title" required="" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
+                                <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -125,6 +125,7 @@
                         Уже опубликованные объявления
                     </div>
                     <div class="panel-body">
+                        <div id="container"></div>
                         <table class="table table-striped">
                             <thead>
                                 <th>#</th>
@@ -141,22 +142,22 @@
                                 {/if}
                             </tbody>
                         </table>
-                        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        Удаление объявления
-                                    </div>
-                                    <div class="modal-body">
-                                        Вы уверены?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                                        <a class="btn btn-danger btn-ok">Удалить</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {*<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*}
+                            {*<div class="modal-dialog">*}
+                                {*<div class="modal-content">*}
+                                    {*<div class="modal-header">*}
+                                        {*Удаление объявления*}
+                                    {*</div>*}
+                                    {*<div class="modal-body">*}
+                                        {*Вы уверены?*}
+                                    {*</div>*}
+                                    {*<div class="modal-footer">*}
+                                        {*<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>*}
+                                        {*<a class="btn btn-danger btn-ok">Удалить</a>*}
+                                    {*</div>*}
+                                {*</div>*}
+                            {*</div>*}
+                        {*</div>*}
                     </div>
                 </div>
             {/if}

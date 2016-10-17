@@ -82,7 +82,7 @@
                         <div class="form-group row">
                             <label for="title" class="col-sm-4 form-control-label">Название объявления</label>
                             <div class="col-sm-8">
-                                <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
+                                <input type="text" name="title" required="" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -127,6 +127,7 @@
                     <div class="panel-body">
                         <table class="table table-striped">
                             <thead>
+                                <th>#</th>
                                 <th>Название объявления</th>
                                 <th>Цена</th>
                                 <th>Имя</th>
@@ -136,7 +137,7 @@
                                 {if $ads_rows}
                                     {$ads_rows}
                                 {else}
-                                    <tr><td colspan="4">Пока объявлений нет.</td></tr>
+                                    <tr><td colspan="5">Пока объявлений нет.</td></tr>
                                 {/if}
                             </tbody>
                         </table>

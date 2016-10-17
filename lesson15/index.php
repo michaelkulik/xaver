@@ -41,17 +41,15 @@ elseif (isset($_GET['delete']) && $_GET['delete'] > 0) {
 // главная страница
 elseif (!$_GET) {
     // получение всех объявлений
-    $ads = AdsStore::getInstance()->getAllAdsFromDb($db)->writeOut($smarty);
-    $ad = (isset($_POST['fill'])) ? AdsStore::fillData() : null; // заполнение формы произвольными данными
-    // остановился здесь
-    $smarty->assign(['ads' => $ads, 'ad' => $ad])->display('index.tpl');
+    $ad = (isset($_POST['fill'])) ? AdsStore::fillData($smarty) : null; // заполнение формы произвольными данными
+    AdsStore::getInstance()->getAllAdsFromDb($db)->prepareForOut($smarty)->display($smarty);
 }
 // страница выбранного объявления
 elseif (isset($_GET['id']) && (int) $_GET['id'] != 0) {
     $id = (int) $_GET['id'];
     $ad = AdsStore::getInstance()->getAdById($db, $id);
     if ($ad) {
-        if (isset($_POST['fill'])) $ad = AdsStore::fillData(); // заполнение формы произвольными данными
+        if (isset($_POST['fill'])) $ad = AdsStore::fillData($smarty); // заполнение формы произвольными данными
         $smarty->assign('ad', $ad)->display('index.tpl');
     } else {
         $smarty->display('not_found.tpl');

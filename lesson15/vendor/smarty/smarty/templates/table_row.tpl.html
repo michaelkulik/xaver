@@ -1,13 +1,14 @@
 <tr>
-    <td>{$ad->getTitle()}</td>
-    <td>{$ad->getPrice()}</td>
-    <td>{$ad->getSeller_name()}</td>
+    <td>{$n}</td>
+    <td>{$table_ad->getTitle()}</td>
+    <td>{$table_ad->getPrice()}</td>
+    <td>{$table_ad->getSeller_name()}</td>
     <td>
-        <a title="Просмотреть | Редактировать" class="btn btn-info note" href="?id={$ad->getId()}">
+        <a title="Просмотреть | Редактировать" class="btn btn-info note" href="?id={$table_ad->getId()}">
             <i class="glyphicon glyphicon-pencil"></i>
         </a>
-        <button title="Удалить" type="submit" class="btn btn-danger note" data-href='?delete={$ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>
+        <a href="#" title="Удалить" class="btn btn-danger note" data-href='?delete={$table_ad->getId()}' data-toggle='modal' data-target='#confirm-delete'>
             <i class="glyphicon glyphicon-trash"></i>
-        </button>
+        </a>
     </td>
 </tr>

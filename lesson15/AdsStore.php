@@ -61,33 +61,38 @@ class AdsStore
             $ad = new Ads($row);
             self::addAds($ad);
             return $this->ads[0];
-//            echo '<pre>';
-//            print_r($this->ads[0]);
-//            echo '</pre>';exit;
         } else {
             return false;
         }
     }
 
-    public function writeOut($smarty)
+    public function prepareForOut($smarty)
     {
         $row = '';
+        $n = 1;
         foreach($this->ads as $ad){
-            $smarty->assign('ad', $ad);
+            $smarty->assign(['table_ad' => $ad, 'n' => $n]);
             $row .= $smarty->fetch('table_row.tpl.html');
+            $n++;
         }
         $smarty->assign('ads_rows', $row);
+        return self::$instance;
+    }
+
+    public function display($smarty)
+    {
+        $smarty->display('index.tpl');
     }
 
     /**
      * Метод для заполнения произвольными данными поля формы
      * @return Ads
      */
-    public static function fillData()
+    public static function fillData($smarty)
     {
         $temp = array(
             'id' => isset($_POST['id']) ? $_POST['id'] : null,
-            'seller_name' => 'Михаил',
+            'seller_name' => 'Петрович',
             'email' => 'michael@mail.ru',
             'phone' => '+79059051234',
             'role' => 'private',
@@ -97,6 +102,7 @@ class AdsStore
             'description' => 'ОТС. Звоните после 18:00.'
         );
         $ad = new Ads($temp);
+        $smarty->assign('ad', $ad);
         return $ad;
     }
 }

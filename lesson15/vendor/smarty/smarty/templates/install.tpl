@@ -2,21 +2,23 @@
 
 <div class="container">
     <div class="row" style="margin-top: 10px;">
-        <div class="col-xs-12 col-lg-8">
+        <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <style>
                 label::after {ldelim}
                     color: red; content: " *";
                 {rdelim}
             </style>
             {if isset($success)}
-                <div class="col-xs-12 alert alert-success" role="alert">
-                    <p>Поздравляем! Дамп базы данных сделан успешно, нажмите на кнопку ниже, чтобы перейти на сайт.</p>
+                <div class="alert alert-success" role="alert">
+                    <p>Поздравляем! Дамп базы данных сделан успешно, нажмите на кнопку ниже, чтобы начать пользоваться сайтом.</p>
+                    <br>
                     <a href="index.php" class="btn btn-success">Перейти на сайт</a>
                 </div>
             {elseif isset($error)}
-                <div class="col-xs-12 alert alert-danger" role="alert">
+                <div class="alert alert-danger" role="alert">
                     <p>Произошла ошибка при работе с базой данных. Пожалуйста, попытайтесь снова.</p>
                     <a href="install.php" class="btn btn-secondary">Попробовать снова</a>
+                    <p>{$error}</p>
                 </div>
             {else}
                 <h4>Установка базы данных</h4>
@@ -47,7 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-3 col-sm-offset-9">
+                        <div class="col-sm-2 col-sm-offset-10">
                             <button name="submit" class="btn btn-primary">Установить</button>
                         </div>
                     </div>

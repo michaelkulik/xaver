@@ -17,7 +17,8 @@ class Install
             $db = new PDO('mysql:host=' . $server_name . ';dbname=' . $database_name . ';charset=utf8', $username, $password);
         }
         catch( PDOException $e ) {
-            echo 'Ошибка создания подключения к базе данных: ' . $e->getMessage() . '<br> <a href="install.php">Назад</a>';
+//            echo 'Ошибка создания подключения к базе данных: ' . $e->getMessage() . '<br> <a href="install.php">Назад</a>';
+            $smarty->assign('error', '[Ошибка создания подключения к базе данных: ' . $e->getMessage() . ']')->display('install.tpl');
             exit;
         }
 

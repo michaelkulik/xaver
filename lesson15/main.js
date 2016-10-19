@@ -8,7 +8,7 @@ $(function(){
     $('a.delete').on('click', function(){
         var tr = $(this).closest('tr');
         var id = $(this).attr('id');
-        $('#container').load('server.php?action=delete&id=' + id, function(){ // что здесь можно взамен селектора #container поставить?
+        $('#container').load('server.php?action=delete&id=' + id, function(){
             tr.fadeOut('1000', function(){
                 $(this).remove();
                 if ($('tbody tr').html() === undefined) {

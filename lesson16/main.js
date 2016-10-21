@@ -4,36 +4,45 @@ $(function(){
     //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
     // });
 
-    // удаление с помощью ajax
+    // удаление с помощью $.getJSON
     $('a.delete').on('click', function(){
         var tr = $(this).closest('tr');
         var id = $(this).attr('id');
-
-        var test = {"id":id};
+        var give_id = {"id" : id};
+        var container = $('#container');
+        var emptydb = $('#emptydb');
 
         $.getJSON('server.php?action=delete',
-            test,
+            give_id,
             function(response){
-                var container = $('#container');
                 if (response.status == 'success') {
-                    container.removeClass('alert-danger').addClass('alert-info');
-                    $('#container_info').text(response.msg);
-                    container.show(); // у меня почему-то с функцией fadeIn() работает как-то коряво, не так как должен работать fadeIn(). Поэтому я сделал просто show()
-                    setTimeout(function(){
-                        container.fadeOut(500);
-                    }, 3000);
-                    tr.remove();
-                    if ($('tbody tr').html() === undefined) {
-                        $('thead').hide();
-                        $('#emptydb').show();
+                    // удаляем строчку объявления в таблице
+                    tr.fadeOut(300, function(){
+                        $(this).remove();
+                    });
+                    // проверяем, пусто ли в таблице базы данных с объявлениями
+                    if (response.row == 'empty') {
+                        // выводим информ. сообщение о том, что больше объявлений нет
+                        $('table').hide();
+                        emptydb.show();
                         setTimeout(function(){
-                            $('#emptydb').fadeOut(500, function(){
-                                $('thead').show();
+                            emptydb.fadeOut(500, function(){
+                                $('table').show();
                                 $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
                             });
+                        }, 4000);
+                        // выводим информ. сообщение об успешном удалении объявления
+                    } else {
+                        container.removeClass('alert-danger').addClass('alert-info');
+                        $('#container_info').text(response.msg);
+                        container.show(); // у меня почему-то с функцией fadeIn() работает как-то коряво, не так как должен работать fadeIn(). Поэтому я сделал просто show()
+                        setTimeout(function(){
+                            container.fadeOut(500);
                         }, 3000);
                     }
+                    // выводим информ. сообщение о неуспешном удалении объявления
                 } else {
+                    // выводим инф. сообщении об успешном удалении объявления
                     container.removeClass('alert-info').addClass('alert-danger');
                     $('#container_info').text(response.msg);
                     container.show();

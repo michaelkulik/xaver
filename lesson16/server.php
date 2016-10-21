@@ -13,6 +13,13 @@ switch ($_GET['action']) {
             $ad->delete($db, $id);
             $result['status'] = 'success';
             $result['msg'] = 'Объявление #' . $id . ' удалено успешно!';
+
+            // проверка на наличие объявлений в базе данных
+            $res = $db->query("SELECT id FROM ads");
+            if (!$row = $res->fetch(PDO::FETCH_ASSOC)) {
+                $result['row'] = 'empty';
+            }
+
         } catch (Exception $e) {
             $result['status'] = 'error';
             $result['msg'] = 'Ошибка при удалении! Попробуйте ещё раз.';

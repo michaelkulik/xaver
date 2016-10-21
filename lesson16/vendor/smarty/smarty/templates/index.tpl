@@ -141,11 +141,11 @@
                                 <th>Действия</th>
                             </thead>
                             <tbody>
-                                <div id="emptydb" class="alert alert-warning alert-dismissible fade in" style="display: none;" role="alert">
-                                    <button onclick="$('#container').hide(); return false;" type="button" class="close" style="float: right;">
+                                <div id="emptydb" class="alert alert-warning alert-dismissible fade in" style="display: none;margin-bottom: 0px;" role="alert">
+                                    <button onclick="$('#emptydb').hide(); return false;" type="button" class="close" style="float: right;">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <div id="container_info">В базе данных больше нет объявлений.</div>
+                                    <div>В базе данных больше нет объявлений.</div>
                                 </div>
                                 {if $ads_rows}
                                     {$ads_rows}

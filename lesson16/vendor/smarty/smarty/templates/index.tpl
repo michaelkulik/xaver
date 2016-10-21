@@ -101,7 +101,7 @@
                         <div class="form-group row">
                             {if isset($smarty.get.id)}
                                 <div class="col-xs-12 col-lg-5">
-                                    <a href="index.php" class="btn btn-default">Назад</a>
+                                    <a href="index.php" class="btn btn-default">Вернуться на главную</a>
                                 </div>
                                 <div class="col-xs-12 col-lg-7">
                                     <button name="fill" class="btn btn-default">Заполнить</button>
@@ -110,7 +110,7 @@
                             {else}
                                 <div class="col-lg-12">
                                     <button name="fill" class="btn btn-secondary">Заполнить</button>
-                                    <button name="submit" class="btn btn-success">Добавить объявление</button>
+                                    <button id="create" name="submit" class="btn btn-success">Добавить объявление</button>
                                 </div>
                             {/if}
                         </div>
@@ -142,7 +142,7 @@
                             </thead>
                             <tbody>
                                 <div id="emptydb" class="alert alert-warning alert-dismissible fade in" style="display: none;margin-bottom: 0px;" role="alert">
-                                    <button onclick="$('#emptydb').hide(); return false;" type="button" class="close" style="float: right;">
+                                    <button id="emptydb_button" type="button" class="close" style="float: right;">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     <div>В базе данных больше нет объявлений.</div>

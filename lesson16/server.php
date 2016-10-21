@@ -24,7 +24,9 @@ switch ($_GET['action']) {
             $result['status'] = 'error';
             $result['msg'] = 'Ошибка при удалении! Попробуйте ещё раз.';
         }
+        break;
+    case 'create':
 
-        echo json_encode($result);
-
+        break;
 }
+if (isset($result)) echo json_encode($result);

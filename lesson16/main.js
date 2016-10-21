@@ -4,53 +4,94 @@ $(function(){
     //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
     // });
 
-    // удаление с помощью $.getJSON
+    // удаление объявлений с помощью $.getJSON
     $('a.delete').on('click', function(){
+        // подготовка нужных переменных
         var tr = $(this).closest('tr');
         var id = $(this).attr('id');
         var give_id = {"id" : id};
         var container = $('#container');
         var emptydb = $('#emptydb');
 
-        $.getJSON('server.php?action=delete',
-            give_id,
-            function(response){
-                if (response.status == 'success') {
-                    // удаляем строчку объявления в таблице
-                    tr.fadeOut(300, function(){
-                        $(this).remove();
+        $.getJSON('server.php?action=delete', give_id, function(response){
+            if (response.status == 'success') {
+                // удаляем строчку объявления в таблице
+                tr.fadeOut(300, function(){
+                    $(this).remove();
+                });
+                // проверяем, пусто ли в таблице базы данных с объявлениями
+                if (response.row == 'empty') {
+                    // выводим информ. сообщение о том, что больше объявлений нет
+                    $('table').hide();
+                    emptydb.show();
+                    // если нажать "закрыть" на информ. сообщении, то есть принудительно закрыть
+                    $('#emptydb_button').on('click', function(){
+                        emptydb.hide();
+                        $('table').show();
+                        $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
                     });
-                    // проверяем, пусто ли в таблице базы данных с объявлениями
-                    if (response.row == 'empty') {
-                        // выводим информ. сообщение о том, что больше объявлений нет
-                        $('table').hide();
-                        emptydb.show();
-                        setTimeout(function(){
-                            emptydb.fadeOut(500, function(){
-                                $('table').show();
-                                $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
-                            });
-                        }, 4000);
-                        // выводим информ. сообщение об успешном удалении объявления
-                    } else {
-                        container.removeClass('alert-danger').addClass('alert-info');
-                        $('#container_info').text(response.msg);
-                        container.show(); // у меня почему-то с функцией fadeIn() работает как-то коряво, не так как должен работать fadeIn(). Поэтому я сделал просто show()
-                        setTimeout(function(){
-                            container.fadeOut(500);
-                        }, 3000);
-                    }
-                    // выводим информ. сообщение о неуспешном удалении объявления
-                } else {
-                    // выводим инф. сообщении об успешном удалении объявления
-                    container.removeClass('alert-info').addClass('alert-danger');
-                    $('#container_info').text(response.msg);
-                    container.show();
                     setTimeout(function(){
-                        $('#container').fadeOut(1000);
+                        emptydb.fadeOut(500, function(){
+                            $('table').show();
+                            $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
+                        });
+                    }, 4000);
+                    // выводим информ. сообщение об успешном удалении объявления
+                } else {
+                    container.removeClass('alert-danger').addClass('alert-info');
+                    $('#container_info').text(response.msg);
+                    container.show(); // у меня почему-то с функцией fadeIn() работает как-то коряво, не так как должен работать fadeIn(). Поэтому я сделал просто show()
+                    setTimeout(function(){
+                        container.fadeOut(500);
                     }, 3000);
                 }
+                // выводим информ. сообщение о неуспешном удалении объявления
+            } else {
+                // выводим инф. сообщении об успешном удалении объявления
+                container.removeClass('alert-info').addClass('alert-danger');
+                $('#container_info').text(response.msg);
+                container.show();
+                setTimeout(function(){
+                    $('#container').fadeOut(1000);
+                }, 3000);
+            }
         });
+    });
+
+    // создание нового объявления
+    $('#create').on('click', function(){
+        // объявление нужных переменных
+
+
+        $.post('server.php?action=create', function(response){
+            var container = $('#container');
+            if (response.status == 'success') {
+                container.removeClass('alert-danger').addClass('alert-info');
+                $('#container_info').text(response.msg);
+                container.show();
+                setTimeout(function(){
+                    container.fadeOut(500);
+                }, 3000);
+                tr.fadeOut('slow', function(){
+                    $(this).remove();
+                });
+                if ($('tbody tr').html() === undefined) {
+                    $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
+                }
+            } else {
+                container.removeClass('alert-info').addClass('alert-danger');
+                $('#container_info').text(response.msg);
+                container.show();
+                setTimeout(function(){
+                    container.fadeOut(2500);
+                }, 3000);
+            }
+        }, 'json');
+    });
+
+
+
+
 
         /*
         // эта функция определяет базовые настройки ajax-а для всех запросов, которые будут выполнены когда-либо после этой функции (то есть для множества функций $.ajax() )
@@ -80,33 +121,6 @@ $(function(){
             }
         });*/
 
-        /*$.post('server.php?action=delete',
-         test,
-         function(response){
-         var container = $('#container');
-         if (response.status == 'success') {
-             container.removeClass('alert-danger').addClass('alert-info');
-             $('#container_info').text(response.msg);
-             container.show();
-             setTimeout(function(){
-                container.fadeOut(500);
-             }, 3000);
-             tr.fadeOut('slow', function(){
-                 $(this).remove();
-             });
-             if ($('tbody tr').html() === undefined) {
-                $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
-             }
-         } else {
-             container.removeClass('alert-info').addClass('alert-danger');
-             $('#container_info').text(response.msg);
-             container.show();
-             setTimeout(function(){
-                container.fadeOut(2500);
-             }, 3000);
-         }
-         }, 'json');*/
-
         // $.get('server.php?action=delete',
         //     test,
         //     // чтобы поглядеть ответ с сервера нужно в функции ниже воспользоваться параметром
@@ -120,5 +134,4 @@ $(function(){
         //             }
         //         });
         //     });
-    });
 });

@@ -10,7 +10,7 @@ $(function(){
         var tr = $(this).closest('tr');
         var id = $(this).attr('id');
         var give_id = {"id" : id};
-        var container = $('#container');
+        var container = $('#container_delete');
         var emptydb = $('#emptydb');
 
         $.getJSON('server.php?action=delete', give_id, function(response){
@@ -33,14 +33,14 @@ $(function(){
                     setTimeout(function(){
                         emptydb.fadeOut(500, function(){
                             $('table').show();
-                            $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
+                            $('tbody').html('<tr id="lasttr"><td colspan="5">Пока объявлений нет.</td></tr>');
                         });
                     }, 4000);
                     // выводим информ. сообщение об успешном удалении объявления
                 } else {
                     container.removeClass('alert-danger').addClass('alert-info');
-                    $('#container_info').text(response.msg);
-                    container.show(); // у меня почему-то с функцией fadeIn() работает как-то коряво, не так как должен работать fadeIn(). Поэтому я сделал просто show()
+                    $('#container_info_delete').text(response.msg);
+                    container.fadeIn('slow');
                     setTimeout(function(){
                         container.fadeOut(500);
                     }, 3000);
@@ -49,10 +49,10 @@ $(function(){
             } else {
                 // выводим инф. сообщении об успешном удалении объявления
                 container.removeClass('alert-info').addClass('alert-danger');
-                $('#container_info').text(response.msg);
-                container.show();
+                $('#container_info_delete').text(response.msg);
+                container.fadeIn('slow');
                 setTimeout(function(){
-                    $('#container').fadeOut(1000);
+                    container.fadeOut(1000);
                 }, 3000);
             }
         });
@@ -61,32 +61,69 @@ $(function(){
     // создание нового объявления
     $('#create').on('click', function(){
         // объявление нужных переменных
+        var container = $('#container_create');
 
+        // значения из полей формы
+        var id = $('#id').val();
+        var role = $('#role:checked').val();
+        var seller_name = $('#seller_name').val();
+        var email = $('#email').val();
+        var allow_mails = $('#allow_mails:checked').val();
+        var phone = $('#phone').val();
+        var city_id = $('#city_id :selected').val();
+        var category_id = $('#category_id :selected').val();
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var price = $('#price').val();
 
-        $.post('server.php?action=create', function(response){
-            var container = $('#container');
+        var data = {
+            "id":id,
+            "role":role,
+            "seller_name":seller_name,
+            "email":email,
+            "allow_mails":allow_mails,
+            "phone":phone,
+            "city_id":city_id,
+            "category_id":category_id,
+            "title":title,
+            "description":description,
+            "price":price
+        };
+
+        $.post('server.php?action=create', data, function(response){
             if (response.status == 'success') {
-                container.removeClass('alert-danger').addClass('alert-info');
-                $('#container_info').text(response.msg);
-                container.show();
-                setTimeout(function(){
-                    container.fadeOut(500);
-                }, 3000);
-                tr.fadeOut('slow', function(){
-                    $(this).remove();
-                });
-                if ($('tbody tr').html() === undefined) {
-                    $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
-                }
+                $('#lasttr').remove();
+                $('tbody').prepend('<tr>'
+                    + '<td>' + response.id + '</td>'
+                    + '<td  style="max-width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">' + response.title + '</td>'
+                    + '<td>' + response.price + '</td>'
+                    + '<td style="max-width: 80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">' + response.seller_name + '</td>'
+                    + '<td>'
+                        + '<a href="?id=' + response.id + '" title="Просмотреть | Редактировать" class="btn btn-info">'
+                            + '<i class="glyphicon glyphicon-pencil"></i>'
+                        + '</a>'
+                        + '<a id="' + response.id + '" title="Удалить" class="delete btn btn-danger">'
+                            + '<i class="glyphicon glyphicon-trash"></i>'
+                        + '</a>'
+                    + '</td>'
+                    + '</tr>').fadeIn('slow');
+                container.removeClass('alert-danger').addClass('alert-success');
+                $('#container_info_create').text(response.msg);
+                container.fadeIn('slow');
+                // setTimeout(function(){
+                //     container.fadeOut(500);
+                // }, 3000);
             } else {
                 container.removeClass('alert-info').addClass('alert-danger');
-                $('#container_info').text(response.msg);
-                container.show();
-                setTimeout(function(){
-                    container.fadeOut(2500);
-                }, 3000);
+                $('#container_info_create').text(response.msg);
+                container.fadeIn('slow');
+                // console.log(response.msg);
+                // setTimeout(function(){
+                //     container.fadeOut(2500);
+                // }, 3000);
             }
         }, 'json');
+    return false;
     });
 
 

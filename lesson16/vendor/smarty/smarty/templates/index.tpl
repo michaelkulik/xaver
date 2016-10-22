@@ -3,26 +3,35 @@
 <div class="container">
     <br>
     <div class="row">
+
+        {*Первая колонка*}
+
         <div class="col-xs-12 col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Форма добавления / просмотра объявления
                 </div>
                 <div class="panel-body">
+                    <div id="container_create" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
+                        <button onclick="$('#container_create').hide(); return false;" type="button" class="close" style="float: right;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div id="container_info_create"></div>
+                    </div>
                     <form method="post">
-                        <input type="hidden" name="id" value="{if isset($ad)}{$ad->getId()}{/if}">
+                        <input type="hidden" name="id" id="id" value="{if isset($ad)}{$ad->getId()}{/if}">
                         <div class="form-group row">
                             <label class="col-sm-4 form-control-label">Вы</label>
                             <div class="col-sm-8">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="role" value="private" {if isset($ad) && $ad->getRole() eq 'private'} checked="" {elseif empty($smarty.get)} checked="" {/if}>
+                                        <input type="radio" id="role" name="role" value="private" {if isset($ad) && $ad->getRole() eq 'private'} checked="" {elseif empty($smarty.get)} checked="" {/if}>
                                         Частное лицо
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="role" value="company" {if isset($ad) && $ad->getRole() eq 'company'} checked="" {/if}>
+                                        <input type="radio" id="role" name="role" value="company" {if isset($ad) && $ad->getRole() eq 'company'} checked="" {/if}>
                                         Компания
                                     </label>
                                 </div>
@@ -31,13 +40,13 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-4 form-control-label">Ваше имя</label>
                             <div class="col-sm-8">
-                                <input type="text" name="seller_name" class="form-control" id="name" placeholder="Имя" value="{if isset($ad)}{$ad->getSeller_name()}{/if}">
+                                <input type="text" id="seller_name" name="seller_name" class="form-control" placeholder="Имя" value="{if isset($ad)}{$ad->getSeller_name()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="email" class="col-sm-4 form-control-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{if isset($ad)}{$ad->getEmail()}{/if}">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="{if isset($ad)}{$ad->getEmail()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -45,7 +54,7 @@
                             <div class="col-sm-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="allow_mails" {if isset($ad) && $ad->getAllow_mails() eq 'yes'} checked="" {/if}> Я не хочу получать вопросы по объявлению по e-mail
+                                        <input type="checkbox" id="allow_mails" name="allow_mails" {if isset($ad) && $ad->getAllow_mails() eq 'yes'} checked="" {/if}> Я не хочу получать вопросы по объявлению по e-mail
                                     </label>
                                 </div>
                             </div>
@@ -53,13 +62,13 @@
                         <div class="form-group row">
                             <label for="phone" class="col-sm-4 form-control-label">Телефон</label>
                             <div class="col-sm-8">
-                                <input type="tel" name="phone" class="form-control" id="phone" placeholder="Телефон" value="{if isset($ad)}{$ad->getPhone()}{/if}">
+                                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Телефон" value="{if isset($ad)}{$ad->getPhone()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="cities" class="col-sm-4 form-control-label">Город</label>
                             <div class="col-sm-8">
-                                <select name="city_id" class="form-control" id="cities">
+                                <select name="city_id" class="form-control" id="city_id">
                                     <option>-- Выберите город --</option>
                                     <option disabled="disabled">-- Города --</option>
                                     {html_options options = $cities selected = (isset($ad)) ? $ad->getCity_id() : null}
@@ -69,7 +78,7 @@
                         <div class="form-group row">
                             <label for="categories" class="col-sm-4 form-control-label">Категория</label>
                             <div class="col-sm-8">
-                                <select name="category_id" class="form-control" id="categories">
+                                <select name="category_id" class="form-control" id="category_id">
                                     <option>-- Выберите категорию --</option>
                                     {foreach from = $cats item = parent_cat}
                                         <optgroup label="{$parent_cat.0}">
@@ -82,7 +91,7 @@
                         <div class="form-group row">
                             <label for="title" class="col-sm-4 form-control-label">Название объявления</label>
                             <div class="col-sm-8">
-                                <input type="text" name="title" class="form-control" id="title" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
+                                <input type="text" id="title" name="title" class="form-control" placeholder="Название" value="{if isset($ad)}{$ad->getTitle()}{/if}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -100,17 +109,17 @@
                         </div>
                         <div class="form-group row">
                             {if isset($smarty.get.id)}
-                                <div class="col-xs-12 col-lg-5">
+                                <div class="col-xs-12 col-lg-7">
                                     <a href="index.php" class="btn btn-default">Вернуться на главную</a>
                                 </div>
-                                <div class="col-xs-12 col-lg-7">
+                                <div class="col-xs-12 col-lg-5">
                                     <button name="fill" class="btn btn-default">Заполнить</button>
-                                    <button name="submit" class="btn btn-success">Сохранить</button>
+                                    <a id="edit" class="btn btn-success">Сохранить</a>
                                 </div>
                             {else}
-                                <div class="col-lg-12">
-                                    <button name="fill" class="btn btn-secondary">Заполнить</button>
-                                    <button id="create" name="submit" class="btn btn-success">Добавить объявление</button>
+                                <div class="col-lg-7 col-lg-offset-5">
+                                    <button name="fill" class="btn btn-default">Заполнить</button>
+                                    <button id="create" class="btn btn-success">Добавить объявление</button>
                                 </div>
                             {/if}
                         </div>
@@ -118,20 +127,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-lg-6">
-            {if !isset($smarty.get.id)}
-                <div id="container" class="alert alert-info alert-dismissible fade in" style="display: none;" role="alert">
+
+        {*Вторая колонка*}
+
+        {if !isset($smarty.get.id)}
+            <div class="col-xs-12 col-lg-6">
+                <div id="container_delete" class="alert alert-info alert-dismissible" style="display: none;" role="alert">
                     <button onclick="$('#container').hide(); return false;" type="button" class="close" style="float: right;">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <div id="container_info"></div>
+                    <div id="container_info_delete"></div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Уже опубликованные объявления
                     </div>
                     <div class="panel-body">
-                        <div id="container"></div>
                         <table class="table table-striped">
                             <thead>
                                 <th>#</th>
@@ -141,7 +152,7 @@
                                 <th>Действия</th>
                             </thead>
                             <tbody>
-                                <div id="emptydb" class="alert alert-warning alert-dismissible fade in" style="display: none;margin-bottom: 0px;" role="alert">
+                                <div id="emptydb" class="alert alert-warning alert-dismissible" style="display: none;margin-bottom: 0px;" role="alert">
                                     <button id="emptydb_button" type="button" class="close" style="float: right;">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -150,7 +161,7 @@
                                 {if $ads_rows}
                                     {$ads_rows}
                                 {else}
-                                    <tr><td colspan="5">Пока объявлений нет.</td></tr>
+                                    <tr id="lasttr"><td colspan="5">Пока объявлений нет.</td></tr>
                                 {/if}
                             </tbody>
                         </table>
@@ -172,8 +183,9 @@
                         {*</div>*}
                     </div>
                 </div>
-            {/if}
-        </div>
+            </div>
+        {/if}
+
     </div>
 </div>
 

@@ -36,7 +36,7 @@ class AdsStore
      */
     public function getAllAdsFromDb(PDO $db)
     {
-        $res = $db->query("SELECT * FROM ads");
+        $res = $db->query("SELECT * FROM ads ORDER BY id DESC");
         $all = $res->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($all as $value) {

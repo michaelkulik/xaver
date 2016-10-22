@@ -16,30 +16,8 @@ $smarty->assign('cities', $city->fetchCities($db));
 $category = new Category;
 $smarty->assign('cats', $category->fetchCategories($db));
 
-// добавление и редактирование объявления
-if (isset($_POST['submit'])) {
-    $ad = new Ads($_POST);
-    try {
-        $ad->save($db);
-        header('location: index.php');
-    } catch (Exception $e) {
-        $smarty->assign('error', $e->getMessage())->display('error.tpl');
-    }
-}
-// удаление объявления
-elseif (isset($_GET['delete']) && $_GET['delete'] > 0) {
-    $id = (int) $_GET['delete'];
-    $ad = new Ads();
-    try {
-        $ad->delete($db, $id);
-        header('location: index.php');
-    }
-    catch (Exception $e) {
-        $smarty->assign('error', $e->getMessage())->display('error.tpl');
-    }
-}
 // главная страница
-elseif (!$_GET) {
+if (!$_GET) {
     // получение всех объявлений
     $ad = (isset($_POST['fill'])) ? AdsStore::fillData($smarty) : null; // заполнение формы произвольными данными
     AdsStore::getInstance()->getAllAdsFromDb($db)->prepareForOut($smarty)->display($smarty);

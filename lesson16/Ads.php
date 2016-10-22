@@ -227,7 +227,7 @@ class Ads
      */
     public function save(PDO $db)
     {
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             $data = []; // в $data положим данные для вставки в запрос SQL
             foreach ($this->cols as $key) {
                 $method = 'get' . ucfirst($key);
@@ -239,6 +239,7 @@ class Ads
             if (!($stmt->rowCount() > 0)) {
                 throw new Exception('Произошла ошибка при добавлении/редактировании данных.');
             }
+            return $db->lastInsertId();
         }
 
     }

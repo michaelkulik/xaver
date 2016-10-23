@@ -1,14 +1,14 @@
 <tr>
     <td>{$table_ad->getId()}</td>
-    <td  style="max-width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{$table_ad->getTitle()}</td>
+    <td  class="width_tr1">{$table_ad->getTitle()}</td>
     <td>{$table_ad->getPrice()}</td>
-    <td style="max-width: 80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{$table_ad->getSeller_name()}</td>
+    <td class="width_tr2 width_tr1">{$table_ad->getSeller_name()}</td>
     <td>
         <a href="?id={$table_ad->getId()}" title="Просмотреть | Редактировать" class="btn btn-info">
             <i class="glyphicon glyphicon-pencil"></i>
         </a>
-        <a id="{$table_ad->getId()}" title="Удалить" class="delete btn btn-danger">
+        <button id="{$table_ad->getId()}" title="Удалить" class="delete btn btn-danger">
             <i class="glyphicon glyphicon-trash"></i>
-        </a>
+        </button>
     </td>
 </tr>

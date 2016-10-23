@@ -5,7 +5,7 @@ $(function(){
     // });
 
     // удаление объявлений с помощью $.getJSON
-    $('a.delete').on('click', function(){
+    $('tbody').on('click', 'button.delete', function(){
         // подготовка нужных переменных
         var tr = $(this).closest('tr');
         var id = $(this).attr('id');
@@ -28,12 +28,12 @@ $(function(){
                     $('#emptydb_button').on('click', function(){
                         emptydb.hide();
                         $('table').show();
-                        $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
+                        $('tbody').html(response.last_tr);
                     });
                     setTimeout(function(){
                         emptydb.fadeOut(500, function(){
                             $('table').show();
-                            $('tbody').html('<tr id="lasttr"><td colspan="5">Пока объявлений нет.</td></tr>');
+                            $('tbody').html(response.last_tr);
                         });
                     }, 4000);
                     // выводим информ. сообщение об успешном удалении объявления
@@ -76,6 +76,7 @@ $(function(){
         var description = $('#description').val();
         var price = $('#price').val();
 
+        // формируем данные, полученные из формы
         var data = {
             "id":id,
             "role":role,
@@ -93,34 +94,20 @@ $(function(){
         $.post('server.php?action=create', data, function(response){
             if (response.status == 'success') {
                 $('#lasttr').remove();
-                $('tbody').prepend('<tr>'
-                    + '<td>' + response.id + '</td>'
-                    + '<td  style="max-width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">' + response.title + '</td>'
-                    + '<td>' + response.price + '</td>'
-                    + '<td style="max-width: 80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">' + response.seller_name + '</td>'
-                    + '<td>'
-                        + '<a href="?id=' + response.id + '" title="Просмотреть | Редактировать" class="btn btn-info">'
-                            + '<i class="glyphicon glyphicon-pencil"></i>'
-                        + '</a>'
-                        + '<a id="' + response.id + '" title="Удалить" class="delete btn btn-danger">'
-                            + '<i class="glyphicon glyphicon-trash"></i>'
-                        + '</a>'
-                    + '</td>'
-                    + '</tr>').fadeIn('slow');
+                $('tbody').prepend(response.tr);
                 container.removeClass('alert-danger').addClass('alert-success');
                 $('#container_info_create').text(response.msg);
                 container.fadeIn('slow');
-                // setTimeout(function(){
-                //     container.fadeOut(500);
-                // }, 3000);
+                setTimeout(function(){
+                    container.fadeOut(500);
+                }, 3000);
             } else {
                 container.removeClass('alert-info').addClass('alert-danger');
                 $('#container_info_create').text(response.msg);
                 container.fadeIn('slow');
-                // console.log(response.msg);
-                // setTimeout(function(){
-                //     container.fadeOut(2500);
-                // }, 3000);
+                setTimeout(function(){
+                    container.fadeOut(2500);
+                }, 3000);
             }
         }, 'json');
     return false;

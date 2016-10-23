@@ -1,0 +1,6 @@
+.width_tr1 {
+    max-width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+.width_tr2 {
+    max-width: 80px;
+}

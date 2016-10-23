@@ -26,9 +26,11 @@ switch ($_GET['action']) {
     case 'create':
         $ad = new Ads($_POST);
         try {
-            $id = $ad->save($db); // сделал так, чтобы метод save() возвращал id последней вставленной записи при добавлении объявления
+            $id = $ad->save($db);
             $res = $db->query("SELECT id, title, price, seller_name FROM ads WHERE id = " . $id);
             $result = $res->fetch(PDO::FETCH_ASSOC);
+            $ad = new Ads($result);
+            $result['tr'] = $smarty->assign('table_ad', $ad)->fetch('table_row.tpl.html');
             $result['status'] = 'success';
             $result['msg'] = 'Объявление успешно добавлено!';
         } catch (Exception $e) {
@@ -37,4 +39,7 @@ switch ($_GET['action']) {
         }
         break;
 }
+// передаём шаблон последней строки в JS
+$result['last_tr'] = $smarty->fetch('table_last_tr.tpl.html');
+
 if (isset($result)) echo json_encode($result);

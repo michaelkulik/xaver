@@ -102,7 +102,7 @@ $(function(){
                     container.fadeOut(500);
                 }, 3000);
             } else {
-                container.removeClass('alert-info').addClass('alert-danger');
+                container.removeClass('alert-success').addClass('alert-danger');
                 $('#container_info_create').text(response.msg);
                 container.fadeIn('slow');
                 setTimeout(function(){
@@ -110,52 +110,61 @@ $(function(){
                 }, 3000);
             }
         }, 'json');
-    return false;
+        return false;
     });
 
+    // редактирование объявления
+    $('#edit').on('click', function(){
+        // объявление нужных переменных
+        var container = $('#container_delete');
 
+        // значения из полей формы
+        var id = $('#id').val();
+        var role = $('#role:checked').val();
+        var seller_name = $('#seller_name').val();
+        var email = $('#email').val();
+        var allow_mails = $('#allow_mails:checked').val();
+        var phone = $('#phone').val();
+        var city_id = $('#city_id :selected').val();
+        var category_id = $('#category_id :selected').val();
+        var title = $('#title').val();
+        var description = $('#description').val();
+        var price = $('#price').val();
 
+        // формируем данные, полученные из формы
+        var data = {
+            "id":id,
+            "role":role,
+            "seller_name":seller_name,
+            "email":email,
+            "allow_mails":allow_mails,
+            "phone":phone,
+            "city_id":city_id,
+            "category_id":category_id,
+            "title":title,
+            "description":description,
+            "price":price
+        };
 
-
-        /*
-        // эта функция определяет базовые настройки ajax-а для всех запросов, которые будут выполнены когда-либо после этой функции (то есть для множества функций $.ajax() )
-        // эта функция работает с $.get(), $.getJSON, $.post(), $.ajax(), исключение - $('selector').load()
-        $.ajaxSetup({
-            type:"POST",
-            timeout:5000,
-            dataType:"json", // может быть html, xml
-        });
-
-        $(document).bind('ajaxStart ajaxStop ajaxSend ajaxSuccess ajaxError ajaxComplete', function(event){
-            console.log(event);
-        });
-
-        $.ajax({
-            url: "server.php?action=delete",
-            global: true, // ставится, чтобы возбуждались глобальные события
-            data: test,
-            success: function(response){ // локальное событие
-                console.log('success', response);
-            },
-            error: function(response){
-                console.log('error' ,response);
-            },
-            complete: function(response){
-                console.log('complete' ,response);
+        $.post('server.php?action=edit', data, function(response){
+            if (response.status == 'success') {
+                container.removeClass('alert-danger').addClass('alert-success');
+                $('#container_info_delete').text(response.msg);
+                container.fadeIn('slow');
+                $('#go-home').show();
+                setTimeout(function(){
+                    container.fadeOut(500);
+                }, 3000);
+            } else {
+                container.removeClass('alert-info alert-success').addClass('alert-danger');
+                $('#container_info_delete').text(response.msg);
+                container.fadeIn('slow');
+                $('#go-home').fadeIn('slow');
+                setTimeout(function(){
+                    container.fadeOut(2500);
+                }, 3000);
             }
-        });*/
-
-        // $.get('server.php?action=delete',
-        //     test,
-        //     // чтобы поглядеть ответ с сервера нужно в функции ниже воспользоваться параметром
-        //     function(response){
-        //         console.log(response);
-        //         // alert(response); // либо так для примера
-        //         tr.fadeOut('1000', function(){
-        //             $(this).remove();
-        //             if ($('tbody tr').html() === undefined) {
-        //                 $('tbody').html('<tr><td colspan="5">Пока объявлений нет.</td></tr>');
-        //             }
-        //         });
-        //     });
+        }, 'json');
+        return false;
+    });
 });

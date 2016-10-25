@@ -19,6 +19,8 @@ switch ($_GET['action']) {
             if (!$row = $res->fetch(PDO::FETCH_ASSOC)) {
                 $result['row'] = 'empty';
             }
+            // передаём шаблон последней строки в JS
+            $result['last_tr'] = $smarty->fetch('table_last_tr.tpl.html');
         } catch (Exception $e) {
             $result['msg'] = 'Ошибка при удалении! Попробуйте ещё раз.';
         }
@@ -38,8 +40,17 @@ switch ($_GET['action']) {
             $result['msg'] = 'Ошибка при создании нового объявления. Попробуйте ещё раз.';
         }
         break;
+    case 'edit':
+        $ad = new Ads($_POST);
+        try {
+            $ad->save($db);
+            $result['status'] = 'success';
+            $result['msg'] = 'Объявление успешно редактировано!';
+        } catch (Exception $e) {
+            $result['status'] = 'error';
+            $result['msg'] = 'Ошибка при редактировании объявления. Попробуйте ещё раз.';
+        }
+        break;
 }
-// передаём шаблон последней строки в JS
-$result['last_tr'] = $smarty->fetch('table_last_tr.tpl.html');
 
 if (isset($result)) echo json_encode($result);

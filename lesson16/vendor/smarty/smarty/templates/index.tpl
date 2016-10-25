@@ -109,12 +109,12 @@
                         </div>
                         <div class="form-group row">
                             {if isset($smarty.get.id)}
-                                <div class="col-xs-12 col-lg-7">
+                                <div class="col-lg-7" style="display: none;" id="go-home">
                                     <a href="index.php" class="btn btn-default">Вернуться на главную</a>
                                 </div>
-                                <div class="col-xs-12 col-lg-5">
+                                <div class="col-lg-5">
                                     <button name="fill" class="btn btn-default">Заполнить</button>
-                                    <a id="edit" class="btn btn-success">Сохранить</a>
+                                    <button id="edit" class="btn btn-success">Сохранить</button>
                                 </div>
                             {else}
                                 <div class="col-lg-7 col-lg-offset-5">
@@ -130,14 +130,15 @@
 
         {*Вторая колонка*}
 
-        {if !isset($smarty.get.id)}
-            <div class="col-xs-12 col-lg-6">
-                <div id="container_delete" class="alert alert-info alert-dismissible" style="display: none;" role="alert">
-                    <button onclick="$('#container').hide(); return false;" type="button" class="close" style="float: right;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <div id="container_info_delete"></div>
-                </div>
+        <div class="col-xs-12 col-lg-6">
+
+            <div id="container_delete" class="alert alert-info alert-dismissible" style="display: none;" role="alert">
+                <button onclick="$('#container').hide(); return false;" type="button" class="close" style="float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div id="container_info_delete"></div>
+            </div>
+            {if !isset($smarty.get.id)}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Уже опубликованные объявления
@@ -145,46 +146,46 @@
                     <div class="panel-body">
                         <table class="table table-striped">
                             <thead>
-                                <th>#</th>
-                                <th>Название объявления</th>
-                                <th>Цена</th>
-                                <th>Имя</th>
-                                <th>Действия</th>
+                            <th>#</th>
+                            <th>Название объявления</th>
+                            <th>Цена</th>
+                            <th>Имя</th>
+                            <th>Действия</th>
                             </thead>
                             <tbody>
-                                <div id="emptydb" class="alert alert-warning alert-dismissible" style="display: none;margin-bottom: 0px;" role="alert">
-                                    <button id="emptydb_button" type="button" class="close" style="float: right;">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <div>В базе данных больше нет объявлений.</div>
-                                </div>
-                                {if $ads_rows}
-                                    {$ads_rows}
-                                {else}
-                                    <tr id="lasttr"><td colspan="5">Пока объявлений нет.</td></tr>
-                                {/if}
+                            <div id="emptydb" class="alert alert-warning alert-dismissible" style="display: none;margin-bottom: 0px;" role="alert">
+                                <button id="emptydb_button" type="button" class="close" style="float: right;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div>В базе данных больше нет объявлений.</div>
+                            </div>
+                            {if $ads_rows}
+                                {$ads_rows}
+                            {else}
+                                {include file="table_last_tr.tpl.html"}
+                            {/if}
                             </tbody>
                         </table>
                         {*<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*}
-                            {*<div class="modal-dialog">*}
-                                {*<div class="modal-content">*}
-                                    {*<div class="modal-header">*}
-                                        {*Удаление объявления*}
-                                    {*</div>*}
-                                    {*<div class="modal-body">*}
-                                        {*Вы уверены?*}
-                                    {*</div>*}
-                                    {*<div class="modal-footer">*}
-                                        {*<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>*}
-                                        {*<a class="btn btn-danger btn-ok">Удалить</a>*}
-                                    {*</div>*}
-                                {*</div>*}
-                            {*</div>*}
+                        {*<div class="modal-dialog">*}
+                        {*<div class="modal-content">*}
+                        {*<div class="modal-header">*}
+                        {*Удаление объявления*}
+                        {*</div>*}
+                        {*<div class="modal-body">*}
+                        {*Вы уверены?*}
+                        {*</div>*}
+                        {*<div class="modal-footer">*}
+                        {*<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>*}
+                        {*<a class="btn btn-danger btn-ok">Удалить</a>*}
+                        {*</div>*}
+                        {*</div>*}
+                        {*</div>*}
                         {*</div>*}
                     </div>
                 </div>
-            </div>
-        {/if}
+            {/if}
+        </div>
 
     </div>
 </div>

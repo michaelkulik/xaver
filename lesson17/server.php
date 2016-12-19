@@ -3,6 +3,7 @@
 require 'config.inc.php';
 //require 'index.php';
 require 'Ads.php';
+require 'AdsStore.php';
 
 //sleep(7);
 
@@ -45,6 +46,10 @@ switch ($_GET['action']) {
         $ad = new Ads($_POST);
         try {
             $ad->save($db);
+            $id = (int) $_POST['id'];
+            $ad = AdsStore::getInstance()->getAdById($db, $id);
+//            $smarty->assign('ad', $ad)->display('index.tpl');
+            $result['current_ad'] = $ad;
             $result['status'] = 'success';
             $result['msg'] = 'Объявление успешно редактировано!';
         } catch (Exception $e) {

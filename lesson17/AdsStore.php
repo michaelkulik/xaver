@@ -83,26 +83,4 @@ class AdsStore
     {
         $smarty->display('index.tpl');
     }
-
-    /**
-     * Метод для заполнения произвольными данными поля формы
-     * @return Ads
-     */
-    public static function fillData($smarty)
-    {
-        $temp = array(
-            'id' => isset($_POST['id']) ? $_POST['id'] : null,
-            'seller_name' => 'Петрович',
-            'email' => 'michael@mail.ru',
-            'phone' => '+79059051234',
-            'role' => 'private',
-            'city_id' => '7',
-            'category_id' => '3',
-            'title' => 'Audi RS ' . substr(time(), -4, 4),
-            'description' => 'ОТС. Звоните после 18:00.'
-        );
-        $ad = new Ads($temp);
-        $smarty->assign('ad', $ad);
-        return $ad;
-    }
 }

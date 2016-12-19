@@ -18,7 +18,6 @@ $(function(){
                     if (response.status == 'success') {
                         $('#lasttr').remove();
                         $('tbody').prepend(response.tr);
-                        console.log(response.tr);
                         container.removeClass('alert-danger').addClass('alert-success');
                         $('#container_info_create').text(response.msg);
                         container.fadeIn('slow');
@@ -69,6 +68,22 @@ $(function(){
                             container.fadeOut(2500);
                         }, 3000);
                     }
+                    // вставляем только что изменённые данные в поля формы
+                    console.log(response.current_ad.title);
+                    if (response.current_ad.role == 'private') {
+                        $('#role[value=private]').attr('checked', 'checked');
+                    } else {
+                        $('#role[value=company]').attr('checked', 'checked');
+                    }
+                    $('#seller_name').val(response.current_ad.seller_name);
+                    $('#email').val(response.current_ad.email);
+                    if (response.current_ad.allow_mails == 'yes') $('#allow_mails').attr('checked', 'checked');
+                    $('#phone').val(response.current_ad.phone);
+                    $('#city_id').val(response.current_ad.city_id);
+                    $('#category_id').val(response.current_ad.category_id);
+                    $('#title').val(response.current_ad.title);
+                    $('#description').val(response.current_ad.description);
+                    $('#price').val(response.current_ad.price);
                 },
 
                 // other available options:

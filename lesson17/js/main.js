@@ -4,49 +4,122 @@ $(function(){
     //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
     // });
 
-    // создание нового объявления
-    $('#create').on('click', function(){
-        var options = {
-            target: '#container_create',  // target element(s) to be updated with server response
-            //beforeSubmit: showRequest, // pre-submit callback
-            success: function(response){ // post-submit callback
-                var container = $('#container_create');
-                if (response.status == 'success') {
-                    $('#lasttr').remove();
-                    $('tbody').prepend(response.tr);
-                    container.removeClass('alert-danger').addClass('alert-success');
-                    $('#container_info_create').text(response.msg);
-                    container.fadeIn('slow');
-                    setTimeout(function(){
-                        container.fadeOut(500);
-                    }, 3000);
-                } else {
-                    container.removeClass('alert-success').addClass('alert-danger');
-                    $('#container_info_create').text(response.msg);
-                    container.fadeIn('slow');
-                    setTimeout(function(){
-                        container.fadeOut(2500);
-                    }, 3000);
-                }
-            },
 
-            // other available options:
-            url: 'server.php?action=create', // override for form's 'action' attribute
-            // type: type, // 'get' or 'post', override for form's 'method' attribute
-            dataType: 'json', // 'xml', 'script', or 'json' (expected server response type)
-            clearForm: false, // clear all form fields after successful submit
-            resetForm: true // reset the form after successful submit
 
-            // $.ajax options can be used here too, for example:
-            // timeout: 3000
-        };
+    $('.submitbutton').on('click', function() {
+        var buttonpressed = $(this).attr('id');
 
-        // bind form using 'ajaxForm'
-        $('#ajax-form').ajaxForm(options);
+        if (buttonpressed == 'create') {
+            var options = {
+                target: '#container_create',  // target element(s) to be updated with server response
+                //beforeSubmit: showRequest, // pre-submit callback
+                success: function(response){ // post-submit callback
+                    var container = $('#container_create');
+                    if (response.status == 'success') {
+                        $('#lasttr').remove();
+                        $('tbody').prepend(response.tr);
+                        console.log(response.tr);
+                        container.removeClass('alert-danger').addClass('alert-success');
+                        $('#container_info_create').text(response.msg);
+                        container.fadeIn('slow');
+                        setTimeout(function(){
+                            container.fadeOut(500);
+                        }, 3000);
+                    } else {
+                        container.removeClass('alert-success').addClass('alert-danger');
+                        $('#container_info_create').text(response.msg);
+                        container.fadeIn('slow');
+                        setTimeout(function(){
+                            container.fadeOut(2500);
+                        }, 3000);
+                    }
+                },
+
+                // other available options:
+                url: 'server.php?action=create', // override for form's 'action' attribute
+                // type: type, // 'get' or 'post', override for form's 'method' attribute
+                dataType: 'json', // 'xml', 'script', or 'json' (expected server response type)
+                clearForm: false, // clear all form fields after successful submit
+                resetForm: true // reset the form after successful submit
+
+                // $.ajax options can be used here too, for example:
+                // timeout: 3000
+            };
+            $('#ajax-form').ajaxForm(options);
+        } else {
+            var options = {
+                target: '#container_delete_edit',  // target element(s) to be updated with server response
+                //beforeSubmit: showRequest, // pre-submit callback
+                success: function(response){ // post-submit callback
+                    var container = $('#container_delete_edit');
+                    if (response.status == 'success') {
+                        container.removeClass('alert-danger').addClass('alert-success');
+                        $('#container_info_delete_edit').text(response.msg);
+                        container.fadeIn('slow');
+                        $('#go-home').show();
+                        setTimeout(function(){
+                            container.fadeOut(500);
+                        }, 3000);
+                    } else {
+                        container.removeClass('alert-info alert-success').addClass('alert-danger');
+                        $('#container_info_delete_edit').text(response.msg);
+                        container.fadeIn('slow');
+                        $('#go-home').fadeIn('slow');
+                        setTimeout(function(){
+                            container.fadeOut(2500);
+                        }, 3000);
+                    }
+                },
+
+                // other available options:
+                url: 'server.php?action=edit', // override for form's 'action' attribute
+                // type: type, // 'get' or 'post', override for form's 'method' attribute
+                dataType: 'json', // 'xml', 'script', or 'json' (expected server response type)
+                clearForm: false, // clear all form fields after successful submit
+                resetForm: true // reset the form after successful submit
+
+                // $.ajax options can be used here too, for example:
+                // timeout: 3000
+            };
+            $('#ajax-form').ajaxForm(options);
+        }
     });
 
+
+
+
+
+    // bind form using 'ajaxForm'
+
+    
+    // создание нового объявления
+    // $('#create').on('click', function(){
+    //
+    // });
+    //
+    // $('#edit').on('click', function(){
+    //
+    // });
+
+
+
+
+
+
+
+    // $(function() {
+    //     var buttonpressed;
+    //     $('.submitbutton').click(function() {
+    //         buttonpressed = $(this).attr('name')
+    //     })
+    //     $('form').submit(function() {
+    //         alert('button clicked was ' + buttonpressed)
+    //         buttonpressed=''
+    //         return(false)
+    //     })
+    // })
     // редактирование объявления
-    $('#edit').on('click', function(){
+    /*$('#edit').on('click', function(){
         // объявление нужных переменных
         var container = $('#container_delete_edit');
 
@@ -98,7 +171,7 @@ $(function(){
             }
         }, 'json');
         return false;
-    });
+    });*/
 
 
 
@@ -154,5 +227,18 @@ $(function(){
                 }, 3000);
             }
         });
+    });
+
+    // вставка тестовых данных в поля формы
+    $('button[name=fill]').on('click', function(){
+        $('#seller_name').val('Николай');
+        $('#email').val('nikolai@mail.ru');
+        $('#phone').val('+79059051234');
+        $('#role[value=private]').attr('checked', 'checked');
+        $('#city_id').val(7);
+        $('#category_id').val(3);
+        $('#title').val('Audi ' + Math.round((Math.random() * 100) + 1));
+        $('#description').val('ОТС. Звоните после 18:00.');
+        return false;
     });
 });

@@ -114,12 +114,12 @@
                                 </div>
                                 <div class="col-lg-5">
                                     <button name="fill" class="btn btn-default">Заполнить</button>
-                                    <button id="edit" class="btn btn-success">Сохранить</button>
+                                    <button id="edit" class="btn btn-success submitbutton">Сохранить</button>
                                 </div>
                             {else}
                                 <div class="col-lg-7 col-lg-offset-5">
                                     <button name="fill" class="btn btn-default">Заполнить</button>
-                                    <button id="create" class="btn btn-success">Добавить объявление</button>
+                                    <button id="create" class="btn btn-success submitbutton">Добавить объявление</button>
                                 </div>
                             {/if}
                         </div>
@@ -166,6 +166,7 @@
                             {/if}
                             </tbody>
                         </table>
+                        {* начало - Всплывающее окно для подтверждения удаления *}
                         {*<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*}
                         {*<div class="modal-dialog">*}
                         {*<div class="modal-content">*}
@@ -182,6 +183,7 @@
                         {*</div>*}
                         {*</div>*}
                         {*</div>*}
+                        {* конец - Всплывающее окно для подтверждения удаления *}
                     </div>
                 </div>
             {/if}
@@ -195,6 +197,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
 <script src="./js/main.js"></script>
-<script src="./js/jquery.form.min.js?{php}echo time();{/php}"></script>
+<script src="./js/jquery.form.min.js"></script>
 
 {include file="footer.tpl"}

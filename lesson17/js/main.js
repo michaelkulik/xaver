@@ -1,11 +1,5 @@
 $(function(){
-    // модальное окно при удалении (было до аякса)
-    // $('#confirm-delete').on('show.bs.modal', function(e) {
-    //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    // });
-
-
-
+    // добавление и редактирование объявления
     $('.submitbutton').on('click', function() {
         var buttonpressed = $(this).attr('id');
 
@@ -55,35 +49,36 @@ $(function(){
                         container.removeClass('alert-danger').addClass('alert-success');
                         $('#container_info_delete_edit').text(response.msg);
                         container.fadeIn('slow');
-                        $('#go-home').show();
                         setTimeout(function(){
                             container.fadeOut(500);
                         }, 3000);
+                        // вставляем только что изменённые данные в поля формы
+                        if (response.role == 'private') {
+                            $('#role[value=private]').attr('checked', 'checked');
+                        } else {
+                            $('#role[value=company]').attr('checked', 'checked');
+                        }
+                        $('#seller_name').val(response.seller_name);
+                        $('#email').val(response.email);
+                        if (response.allow_mails == 'yes') {
+                            $('#allow_mails').attr('checked', 'checked');
+                        } else {
+                            $('#allow_mails').removeAttr('checked');
+                        }
+                        $('#phone').val(response.phone);
+                        $('#city_id').val(response.city_id);
+                        $('#category_id').val(response.category_id);
+                        $('#title').val(response.title);
+                        $('#description').val(response.description);
+                        $('#price').val(response.price);
                     } else {
                         container.removeClass('alert-info alert-success').addClass('alert-danger');
                         $('#container_info_delete_edit').text(response.msg);
                         container.fadeIn('slow');
-                        $('#go-home').fadeIn('slow');
                         setTimeout(function(){
                             container.fadeOut(2500);
                         }, 3000);
                     }
-                    // вставляем только что изменённые данные в поля формы
-                    console.log(response.current_ad.title);
-                    if (response.current_ad.role == 'private') {
-                        $('#role[value=private]').attr('checked', 'checked');
-                    } else {
-                        $('#role[value=company]').attr('checked', 'checked');
-                    }
-                    $('#seller_name').val(response.current_ad.seller_name);
-                    $('#email').val(response.current_ad.email);
-                    if (response.current_ad.allow_mails == 'yes') $('#allow_mails').attr('checked', 'checked');
-                    $('#phone').val(response.current_ad.phone);
-                    $('#city_id').val(response.current_ad.city_id);
-                    $('#category_id').val(response.current_ad.category_id);
-                    $('#title').val(response.current_ad.title);
-                    $('#description').val(response.current_ad.description);
-                    $('#price').val(response.current_ad.price);
                 },
 
                 // other available options:
@@ -99,96 +94,6 @@ $(function(){
             $('#ajax-form').ajaxForm(options);
         }
     });
-
-
-
-
-
-    // bind form using 'ajaxForm'
-
-    
-    // создание нового объявления
-    // $('#create').on('click', function(){
-    //
-    // });
-    //
-    // $('#edit').on('click', function(){
-    //
-    // });
-
-
-
-
-
-
-
-    // $(function() {
-    //     var buttonpressed;
-    //     $('.submitbutton').click(function() {
-    //         buttonpressed = $(this).attr('name')
-    //     })
-    //     $('form').submit(function() {
-    //         alert('button clicked was ' + buttonpressed)
-    //         buttonpressed=''
-    //         return(false)
-    //     })
-    // })
-    // редактирование объявления
-    /*$('#edit').on('click', function(){
-        // объявление нужных переменных
-        var container = $('#container_delete_edit');
-
-        // значения из полей формы
-        var id = $('#id').val();
-        var role = $('#role:checked').val();
-        var seller_name = $('#seller_name').val();
-        var email = $('#email').val();
-        var allow_mails = $('#allow_mails:checked').val();
-        var phone = $('#phone').val();
-        var city_id = $('#city_id :selected').val();
-        var category_id = $('#category_id :selected').val();
-        var title = $('#title').val();
-        var description = $('#description').val();
-        var price = $('#price').val();
-
-        // формируем данные, полученные из формы
-        var data = {
-            "id":id,
-            "role":role,
-            "seller_name":seller_name,
-            "email":email,
-            "allow_mails":allow_mails,
-            "phone":phone,
-            "city_id":city_id,
-            "category_id":category_id,
-            "title":title,
-            "description":description,
-            "price":price
-        };
-
-        $.post('server.php?action=edit', data, function(response){
-            if (response.status == 'success') {
-                container.removeClass('alert-danger').addClass('alert-success');
-                $('#container_info_delete_edit').text(response.msg);
-                container.fadeIn('slow');
-                $('#go-home').show();
-                setTimeout(function(){
-                    container.fadeOut(500);
-                }, 3000);
-            } else {
-                container.removeClass('alert-info alert-success').addClass('alert-danger');
-                $('#container_info_delete_edit').text(response.msg);
-                container.fadeIn('slow');
-                $('#go-home').fadeIn('slow');
-                setTimeout(function(){
-                    container.fadeOut(2500);
-                }, 3000);
-            }
-        }, 'json');
-        return false;
-    });*/
-
-
 
     // удаление объявлений с помощью $.getJSON
     $('tbody').on('click', 'button.delete', function(){
@@ -255,5 +160,10 @@ $(function(){
         $('#title').val('Audi ' + Math.round((Math.random() * 100) + 1));
         $('#description').val('ОТС. Звоните после 18:00.');
         return false;
+    });
+
+    // отмена клавиши ENTER для кнопки "Заполнить"
+    $(document).bind('keypress', 'button[name=fill]', function (e) {
+        if ( e.which == 13 ) return false;
     });
 });

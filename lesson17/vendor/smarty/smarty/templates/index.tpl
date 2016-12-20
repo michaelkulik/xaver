@@ -109,7 +109,7 @@
                         </div>
                         <div class="form-group row">
                             {if isset($smarty.get.id)}
-                                <div class="col-lg-7" style="display: none;" id="go-home">
+                                <div class="col-lg-7">
                                     <a href="index.php" class="btn btn-default">Вернуться на главную</a>
                                 </div>
                                 <div class="col-lg-5">
